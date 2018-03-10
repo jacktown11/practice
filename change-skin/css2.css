@@ -1,0 +1,8 @@
+body{
+    text-align: left;
+    background-color: #cca;
+}
+article{
+    border: 2px dashed #080;
+    border-radius: 5px;
+}
