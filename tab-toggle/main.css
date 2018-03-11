@@ -1,0 +1,39 @@
+.container{
+    width: 70%;
+    margin: auto;
+}
+ul{
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+ul::before,
+ul::after{
+    content: '';
+    display: table;
+}
+ul::after{
+    clear: both;
+}
+li{
+    width: 33.3%;
+    text-align: center;
+    float: left;
+    border-right: 1px solid black;
+    background-color: #ccc;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+li:last-child{
+    border-right: none;
+}
+li.active{
+    background-color: #eee;
+}
+.content div{
+    border: 1px solid #eee;
+    display: none;
+}
+.content div.show{
+    display: block;
+}
