@@ -1,0 +1,12 @@
+body{
+    text-align: center;
+}
+p{
+    color: #f80;
+}
+.wrap{
+    line-height: 3;
+}
+input{
+    width: 500px;
+}
