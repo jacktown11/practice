@@ -1,0 +1,81 @@
+html,body,div,ul,li{
+    margin: 0;
+    padding: 0;
+}
+li{
+    list-style-type: none;
+}
+
+*{
+    box-shadow: 0 0 0 1px #ccc;
+}
+
+.clearfix{
+    zoom: 1;
+}
+.clearfix:after{
+    content: "";
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+}
+
+
+.carousel{
+    width: 800px;
+    height: 480px;
+    margin: 20px auto;
+    
+}
+.carousel-wrap{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border: 1px solid #000;
+    overflow: hidden;
+}
+.carousel-item{
+    position: absolute;
+    display: none;
+    z-index: 10;
+    top: 0px;
+    left: 1240px;
+    width: 560px;
+    height: 288px;
+    margin: 96px 0;
+    box-shadow: 0 0 0 1px #08f;
+    background: linear-gradient(to right, #08f, #f00 50%, #080);
+    font-size: 40px;
+    /* text-align: center; */
+    transition: all 0.3s;
+}
+.carousel .active,
+.carousel .prev,
+.carousel .next,
+.carousel .next-before,
+.carousel .prev-after{
+    display: block;
+}
+.carousel .active{
+    left: 120px;
+    height: 100%;
+    margin: 0;
+}
+.carousel .prev{
+    left: -440px;
+}
+.carousel .prev-after{
+    left: -980px;
+}
+.carousel .next{
+    left: 680px;
+}
+.carousel .next-before{
+    left: 1240px;
+}
+.carousel .normal{
+    display: none;
+}
+
+
