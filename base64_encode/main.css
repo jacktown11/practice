@@ -1,0 +1,76 @@
+/* part1: 复用样式 */
+.cf{
+    clear: both;
+}
+.cf:after{
+    height: 0;
+    display: block;
+    clear: both;
+    content: '';
+}
+
+/* part2：全局样式 */
+html,body{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width: 80%;
+    margin: auto;
+}
+p,button{
+    border: none;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+
+/* part3：图片上传 */
+.upload{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    height: 200px;
+    border: 2px dashed #ccc;
+    border-radius: 0 8px 8px 0;
+    text-align: center;
+    position: relative;
+}
+
+#picture{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 100;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.upload p{
+    margin-top: 60px;
+    height: 30%;
+    font-size: 120%;
+    font-weight: bold;
+    color: #ccc;
+    vertical-align: middle;
+    line-height: 1.5;
+}
+
+
+/* part4：转码结果 */
+p#file-data{
+    border-radius: 0 12px 12px 0;
+    border: 2px solid #009688;
+    display: block;
+    height: 200px;
+    margin: 0;
+    padding: 0;
+    box-sizing: content-box;
+    word-wrap: break-word;
+    overflow: auto;
+}
+p.info{
+    text-align: center;
+    color: #888;
+    display: none;
+}
