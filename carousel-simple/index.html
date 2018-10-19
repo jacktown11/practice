@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Carousel Simple</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            text-decoration: none;
+        }
+        body{
+            width: 600px;
+            margin: auto;
+            padding: 20px;
+        }
+        h2{
+            text-align: center;
+        }
+        #container{
+            width: 400px;
+            height: 224px;
+            margin: auto;
+            border: 3px solid #333;
+            overflow: hidden;
+            position: relative;
+
+            /* 禁止用户文本选择 */
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Chrome/Safari/Opera */
+            -khtml-user-select: none; /* Konqueror */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currentlynot supported by any browser */
+        }
+        #list{
+            width: 2800px;
+            height: 224px;
+            position: absolute;
+            z-index: 1;
+        }
+        #list img{
+            float: left;
+        }
+        #buttons{
+            position: absolute;
+            height: 10px;
+            width: 100px;
+            z-index: 2;
+            left: 150px;
+            bottom: 20px;
+            text-align: center;
+        }
+        #buttons span{
+            cursor: pointer;
+            display: inline-block;
+            border: 1px solid #fff;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        #buttons .on{
+            background-color: #f40;
+        }
+        .arrow{
+            position: absolute;
+            z-index: 2;
+            width: 40px;
+            height: 40px;
+            top: 92px;
+            cursor: pointer;
+            display: none;
+            line-height: 39px;
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #fff;
+            background-color: rgba(0,0,0,0.3);
+            border-radius: 50%;
+        }
+        .arrow:hover{
+            background-color: rgba(0,0,0,0.7);
+        }
+        #container:hover .arrow{
+            display: block;
+        }
+        #prev{
+            left: 20px;
+        }
+        #next{
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>原生javascript轮播图</h2>
+    <p>
+        参考慕课网课程：<a href="https://www.imooc.com/learn/18">焦点图轮播特效</a>
+    </p>
+    <p>
+        github: <a href=""></a>
+    </p>
+    <div id="container">
+        <div id="list" style="left: -400px">
+            <img src="./img/5.jpg" alt="图片5">
+            <img src="./img/1.jpg" alt="图片1">
+            <img src="./img/2.jpg" alt="图片2">
+            <img src="./img/3.jpg" alt="图片3">
+            <img src="./img/4.jpg" alt="图片4">
+            <img src="./img/5.jpg" alt="图片5">
+            <img src="./img/1.jpg" alt="图片1">
+        </div>
+        <div id="buttons">
+            <span index="1" class="on"></span>
+            <span index="2"></span>
+            <span index="3"></span>
+            <span index="4"></span>
+            <span index="5"></span>
+        </div>
+        <a href="javascript:;" class="arrow" id="prev">&lt;</a>
+        <a href="javascript:;" class="arrow" id="next">&gt;</a>
+    </div>
+    <script>
+        window.onload = function(){
+            let app = {
+                start(){
+                    nodes.setEvent();
+                    carousel.autoPlay();
+                }
+            };
+            let nodes = {
+                container: document.getElementById('container'),
+                list: document.getElementById('list'),
+                buttonsParent: document.getElementById('buttons'),
+                buttons: document.getElementById('buttons').getElementsByTagName('span'),
+                prev: document.getElementById('prev'),
+                next: document.getElementById('next'),
+                setEvent(){
+                    this.next.onclick = function (e) {
+                        if (!carousel.isAnimating) {
+                            // 解锁状态下，切换到后一页
+                            carousel.goNextPage();
+                        }
+                    };
+                    this.prev.onclick = function (e) {
+                        if (!carousel.isAnimating) {
+                            // 解锁状态下，切换到前一页
+                            carousel.goPrevPage();
+                        }
+                    };
+                    this.buttonsParent.onclick = function (e) {
+                        let target = e.target;
+                        if (!carousel.isAnimating && target.tagName.toLowerCase() === 'span') {
+                            // 解锁状态下，点击了页数按钮
+                            let targetIndex = parseInt(target.getAttribute('index'));
+                            carousel.goToPage(targetIndex);
+                        }
+                    };
+                    this.container.onmouseover = function (e) {
+                        carousel.stopAutoPlay();
+                    };
+                    this.container.onmouseleave = function (e) {
+                        carousel.autoPlay();
+                    };
+                }
+            };
+            let carousel = {
+                intervalId: undefined, // 自动轮播的间歇调用id
+                index: 1, // 当前显示的图片索引，以1起始
+                pageWidth: 400, // 每页的宽度(px)
+                pageNum: 5, // 总页数
+                isAnimating: false, // 在动画过程中，上锁，以避免用户快速多次点击可能造成的混乱（用户点击后，isAnimating设置为true，上锁，不再有效响应用户轮播图的点击跳转；直到本次动画切换结束，将此值设置为false，解锁，重新有效响应用户点击）
+                loopTime: 3000, // 自动轮播周期（ms）
+                animateTime: 300, // 动画总时长（ms）
+                animateInterval: 15, // 动画帧间隔（ms）
+                showButton(index) {
+                    // 高亮指定索引的按钮，index从1起始
+                    let buttons = nodes.buttons;
+                    let button;
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].className = '';
+                    }
+                    buttons[index - 1].className = 'on';
+                },
+                animate(offset) {
+                    // 切换指定偏移量
+                    this.isAnimating = true;
+                    let self = this;
+                        list = nodes.list,
+                        left = parseInt(list.style.left), // 当前位置
+                        newLeft = parseInt(list.style.left) + offset; //目标位置
+                    let totalWidth = this.pageWidth * this.pageNum;
+                    let time = this.animateTime, 
+                        interval = this.animateInterval, 
+                        speed = offset / (time / interval);   // 每次位置变化量
+
+                    let go = function () {
+                        if (speed * (left - newLeft) < 0) {
+                            // 还未到达目标位置
+                            left += speed;
+                            list.style.left = left + 'px';
+                            setTimeout(go, interval);
+                        } else {
+                            // 已经到达目标位置，不再运动
+
+                            // 如果显示的是第一张或最后一张，需要重置，确保left值回到[-pageWidth*pageNum, -pageWidth]区间
+                            if (newLeft > -self.pageWidth) {
+                                newLeft -= totalWidth;
+                            } else if (newLeft < -totalWidth) {
+                                newLeft += totalWidth;
+                            }
+                            list.style.left = newLeft + 'px';
+
+                            // 解锁，以重新有效响应用户点击
+                            self.isAnimating = false;
+                        }
+                    };
+                    go();
+                },
+                goToPage(targetIndex){
+                    // 动画切换到指定页数的页面
+                    if (targetIndex !== this.index) {
+                        this.showButton(targetIndex);
+                        this.animate(-this.pageWidth * (targetIndex - this.index));
+                        this.index = targetIndex;
+                    }
+                },
+                goNextPage(){
+                    let targetIndex = this.index===this.pageNum?1:this.index+1;
+                    this.showButton(targetIndex);
+                    this.animate(-this.pageWidth);
+                    this.index = targetIndex;
+                },
+                goPrevPage(){
+                    let targetIndex = this.index===1?this.pageNum:this.index-1;
+                    this.showButton(targetIndex);
+                    this.animate(this.pageWidth);
+                    this.index = targetIndex;
+                },
+                autoPlay(){
+                    this.intervalId = setInterval(() => {
+                        nodes.next.onclick();
+                    }, this.loopTime);
+                },
+                stopAutoPlay(){
+                    clearInterval(this.intervalId);
+                }
+            };
+            
+            app.start();
+        };
+    </script>
+</body>
+</html>
