@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>百度一下</title>
+    <style>
+        #search{
+            width: 640px;
+            margin: auto;
+            margin-top: 253px;
+            vertical-align: middle;
+        }
+        #wd,#submit{
+            font-size: 16px;
+            float: left;
+            height: 38px;
+            border: 1px solid #c0c0c0;
+            padding: 2px;
+            box-sizing: border-box;
+        }
+        #wd{
+            width: 536px;
+            padding-left: 5px;
+        }
+        #wd:hover{
+            border-color: #999; 
+        }
+        #wd:focus{
+            border-color: #3388FF;
+        }
+        #submit{
+            width: 104px;
+            color: #fff;
+            border-color: #3388FF;
+            background-color: #3388FF;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form id="search" action="https://www.baidu.com/s" method="GET">
+        <input id="wd" type="text" name="wd"><button id="submit" type="submit">百度一下</button>
+    </form>
+</body>
+</html>
