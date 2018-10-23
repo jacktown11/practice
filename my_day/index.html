@@ -251,6 +251,7 @@
                 let gone = document.createElement('div');
                 gone.className = 'gone';
                 gone.style.backgroundColor = Color.getColorByScore(scoreData.getAverage());
+                gone.style.width = (scoreData.todayIndex+1)/app.DAYS_TO_LIVE * 100 + '%';
                 bar.appendChild(gone);
                 document.body.insertBefore(bar, this.container);
             }
