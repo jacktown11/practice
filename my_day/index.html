@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>my-day</title>
+    <style>
+        body{
+            width: 1260px;
+            margin: auto;
+            margin-top: 0px;
+        }
+        p.count{
+            text-align: center;
+        }
+        .gone-num{
+            font-size: 130%;
+            font-weight: bold;
+            color: #088;
+            position: relative;
+            top: 2px;
+        }
+        .total-num{
+            font-size: 100%;
+        }
+
+        .bar{
+            width: 100%;
+            height: 8px;
+            background-color: #ddd;
+            margin-bottom: 5px;
+        }
+        .gone{
+            width: 33%;
+            height: 100%;
+            background-color: #080;
+        }
+
+        .container{
+            width: 100%;
+            margin: auto;
+        }
+        .container p{
+            margin: 0px;
+            padding: 0px;
+            float: left;
+            width: 3px;
+            height: 3px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+        .container p:hover{
+            border-color: #000;
+        }
+        p.passed{
+            background-color: #080;
+            border-color: transparent;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- <div class="bar">
+        <div class="gone">
+
+        </div>
+    </div> -->
+    <div class="container">
+        <!-- <p class="passed" data-score="80" data-day="2018-10-23" title="2018-10-23"></p> -->
+    </div>
+
+    <script>
+    
+        // 该对象用于表示了某天的日期及其在文档中对应的节点
+        function Day(year, month, day) {
+            this.node = null;
+            this.year = year;
+            this.month = month; // start form 0
+            this.day = day;
+            this.dateStr = year + '-' + (month + 1) + '-' + day;
+            this.isPassed = new Date(this.year, this.month, this.day).getTime() + Day.MS_OF_ONE_DAY < Date.now();
+            this.init(); //创建出该日期的文档节点（未插入文档）
+        }
+        Day.MS_OF_ONE_DAY = 24 * 60 * 60 * 1000;
+        Day.prototype = {
+            constructor: Day,
+            now: new Date(),
+            today: (function () {
+                let d = new Date();
+                return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            })(),
+            init() {
+                // 创建出该日期的文档节点（未插入文档）
+                let p = document.createElement('p');
+                p.setAttribute('data-day', this.dateStr);
+                let score = scoreData.getScoreByDate(this.year, this.month, this.day);
+                if (!score) score = this.isPassed ? scoreData.defaultScore : 0;
+                p.setAttribute('data-score', score);
+                p.setAttribute('title', this.dateStr + ' 得分' + score);
+                if (this.isPassed) {
+                    p.className = 'passed';
+                    let color = Color.getColorByScore(score);
+                    p.style.backgroundColor = color;
+                }
+                this.node = p;
+            },
+
+        };
+        let birthday = {
+            year: 1993,
+            month: 4, // start from 0
+            day: 24,
+            date: new Date(1993, 4, 24)
+        };
+        let scoreData = {
+            data: [],
+            defaultScore: 85,
+            todayIndex: (function(){
+                let now = new Date();
+                let year = now.getFullYear(),
+                    month = now.getMonth(),
+                    day = now.getDate();
+                return (new Date(year, month, day).getTime() - birthday.date.getTime()) / Day.MS_OF_ONE_DAY;
+            })(),
+            getIndexOfDay(year, month, day){
+                return (new Date(year, month, day).getTime() - birthday.date.getTime()) / Day.MS_OF_ONE_DAY;
+            },
+            getScoreByDate(year, month, day){
+                // 获取某日期的得分
+                return this.data[this.getIndexOfDay(year, month, day)];
+            },
+            setScoreByDate(year, month, day, score){
+                // 存储某日期的得分
+                return this.data[this.getIndexOfDay(year, month, day)] = score;
+            },
+            initScoreData(callback){
+                //请求./data/score.json，遍历存储
+                let self = this;
+
+                // 设置以往没有分数记录的日期的默认分数
+                let defaultScore = this.defaultScore,
+                    todayIndex = this.todayIndex,
+                    data = this.data;
+                for(let i = 0; i < todayIndex; i++){
+                    data[i] = defaultScore;
+                }
+
+                // 获取到数据后的遍历存储函数
+                let loadData = function(data){
+                    data = JSON.parse(data);
+                    data.forEach((item) => {
+                        let startTime = item.startTime.split('-');
+                        let date = new Date(startTime[0], startTime[1]-1, startTime[2]);
+                        let scores = item.score;
+                        scores.forEach((score) => {
+                            self.setScoreByDate(date.getFullYear(), date.getMonth(), date.getDate(), score);
+                            date = new Date(date.getTime() + Day.MS_OF_ONE_DAY);
+                        });
+                    });
+                };
+
+                // ajax请求获取score.json
+                let xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState === 4){
+                        if((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304){
+                            loadData(xhr.responseText);
+                        }else{
+                            console.log('fail to load score.json');
+                        }
+                        callback && callback();
+                    }
+                };
+                xhr.open('get', './data/score.json', true);
+                xhr.send(null);
+            },
+            getAverage(){
+                let scoreSum = 0,
+                    data = this.data,
+                    todayIndex = this.todayIndex;
+                for(let i = 0; i < todayIndex; i++){
+                    scoreSum += data[i];
+                }
+                return scoreSum/todayIndex;
+            }
+        };
+        
+        let Color = {
+            getColorByScore(score) {
+                // 获取某得分对应的背景色，通过对rgb值查表线性插入
+                let table = {
+                    score: [-20, 0, 100],
+                    red: [255, 255, 0],
+                    green: [0, 255, 136],
+                    blue: [0, 0, 0]
+                };
+                let len = table.score.length,
+                    min = table.score[0], //最低分
+                    max = table.score[table.length - 1]; //最低分
+                score = score < min ? min : (score > max ? max : score);
+                let minIndex = 0, maxIndex = 1;
+                for (let i = 0; i < len; i++) {
+                    if (score >= table.score[i]) {
+                        minIndex = i;
+                    } else {
+                        break;
+                    }
+                }
+                maxIndex = Math.min(minIndex + 1, len - 1);
+
+                let red = table.red[minIndex] + (table.red[maxIndex] - table.red[minIndex]) / (table.score[maxIndex] - table.score[minIndex]) * (score - table.score[minIndex]);
+                let green = table.green[minIndex] + (table.green[maxIndex] - table.green[minIndex]) / (table.score[maxIndex] - table.score[minIndex]) * (score - table.score[minIndex]);
+                let blue = table.blue[minIndex] + (table.blue[maxIndex] - table.blue[minIndex]) / (table.score[maxIndex] - table.score[minIndex]) * (score - table.score[minIndex]);
+                return 'rgb(' + red.toFixed(0) + ',' + green.toFixed(0) + ',' + blue.toFixed(0) + ')';
+            }
+        }
+        
+        let app = {
+            container: document.getElementsByClassName('container')[0],
+            YEAR_TO_LIVE: 75,
+            DAYS_TO_LIVE: (new Date(birthday.year+75, birthday.month, birthday.day).getTime() - birthday.date.getTime())/Day.MS_OF_ONE_DAY + 1,
+            start(){
+                // 启动页面
+                // 请求score.json，并渲染
+                scoreData.initScoreData(this.initRender.bind(this));
+            },
+            initRender(){
+                // 在已经得到个日期得分数据的情况下，渲染整个页面
+                this.showTitle();
+                this.showBar();
+                let frag = document.createDocumentFragment();
+                let currentDate = birthday.date;
+                for(let i = 0; i < this.DAYS_TO_LIVE; i++){
+                    let p = new Day(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()).node;
+                    frag.appendChild(p);
+                    currentDate = new Date(currentDate.getTime() + Day.MS_OF_ONE_DAY);
+                }
+                this.container.appendChild(frag);
+            },
+            showTitle(){
+                let p = document.createElement('p');
+                let daysPassed = ((Date.now() - birthday.date.getTime()) / Day.MS_OF_ONE_DAY).toFixed(0);
+                p.className = 'count';
+                p.innerHTML = '如果我可以活75年，那么还剩下&nbsp;<span class="gone-num">'+ (this.DAYS_TO_LIVE-daysPassed)+'</span>&nbsp;天';
+                document.body.insertBefore(p, this.container);
+            },
+            showBar(){
+                let bar = document.createElement('div');
+                bar.className = 'bar';
+                let gone = document.createElement('div');
+                gone.className = 'gone';
+                gone.style.backgroundColor = Color.getColorByScore(scoreData.getAverage());
+                bar.appendChild(gone);
+                document.body.insertBefore(bar, this.container);
+            }
+        };
+        app.start();
+        
+    </script>
+
+</body>
+</html>
