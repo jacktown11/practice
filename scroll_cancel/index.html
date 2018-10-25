@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>scroll control</title>
+    <style>
+        #content{
+            width: 400px;
+            height: 2000px;
+        }
+        #scroll-control{
+            width: 400px;
+            height: 400px;
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background-color: #080;
+        }
+    </style>
+</head>
+<body>
+    <h1>禁用滚动</h1>
+    <p id="content">
+        <a href="./">github源码</a>
+    </p>
+    <p id="scroll-control"></p>
+
+    <script>
+        let scrollCtr = {
+            node: document.getElementById('scroll-control'),
+            isScrollable: false,
+            setEvent(){
+                let self = this;
+                document.onmousewheel = function(event){
+                    console.log('mousescroll');
+                    if(!self.isScrollable){
+                        event.preventDefault();
+                    }
+                };
+                this.node.onmouseover = function(event){
+                    self.isScrollable = true;
+                };
+                this.node.onmouseleave = function(event){
+                    self.isScrollable = false;
+                }
+            }
+        };
+        scrollCtr.setEvent();
+
+    </script>
+</body>
+</html>
