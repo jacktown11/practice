@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Video</title>
+    <style>
+        *{
+            box-shadow: 0px 0px 2px #e60;
+        }
+        body{
+            text-align: center;
+            margin: 20px 0;
+        }
+        .container{
+            position: relative;
+            width: 800px;
+            height: 450px;
+            margin: auto;
+        }
+        .container video{
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .ad, .ctrl{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -60px;
+            margin-top: -60px;
+            display: none;
+        }
+        .ad{
+            margin-left: -300px;
+            margin-top: -200px;
+        }
+        .ad img{
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>h5视频</h2>
+
+    <div class="container">
+        <!-- 视频元素 -->
+        <video src="static/aaa.mp4" id="v1" preload="metadate">您的浏览器版本太低，无法播放，请升级。</video>
+        <!-- 广告 -->
+        <a href="javascript:void(0);" class="ad" id="ad">
+            <img src="static/ad.png" alt="广告">
+        </a>
+        <!-- 播放按钮 -->
+        <a href="javascript:void(0);" class="ctrl" id="ctrl">
+            <img src="static/play.png" alt="播放按钮">
+        </a>
+    </div>
+    <!--
+    <hr>
+    <video id="v2"> 
+        <source src="static/aaa.mp4">
+        <source src="static/aaa.ogg">
+        <source src="static/aaa.webm">
+        您的浏览器版本太低，无法播放，请升级。
+    </video> -->
+
+    <script>
+        let container = document.querySelector('.container');
+        let v1 = document.getElementById('v1'),
+            ad = document.getElementById('ad'),
+            ctrl = document.getElementById('ctrl'),
+            ctrlImg = ctrl.getElementsByTagName('img')[0];
+        for(let key in v1){
+            console.log(key + ' : ' + container[key]);
+        }
+
+        // 鼠标移入移出时，按钮图片的显示与隐藏
+        container.onmouseenter = function(){
+            // 更具播放状态显示对应图片
+            if(v1.paused){
+                ctrlImg.src = 'static/play.png';
+            }else{
+                ctrlImg.src = 'static/pause.jpg';
+            }
+            ctrl.style.display = 'block';
+        };  
+        container.onmouseleave = function(){
+            ctrl.style.display = 'none';
+        }
+
+        // 响应播放、暂停按钮点击
+        ctrl.onclick = function(e){
+            e.preventDefault();
+            if(v1.paused){
+                ctrlImg.src='static/pause.jpg';
+                v1.play();
+            }else{
+                ctrlImg.src='static/play.png';
+                v1.pause();
+            }
+        }
+        
+        // 监听视频的播放/暂停时间，切换广告图片的显示/隐藏
+        v1.onplay = function(e){
+            ad.style.display = 'none';
+        };
+        v1.onpause = function(e){
+            ad.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

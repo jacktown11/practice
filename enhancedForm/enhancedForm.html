@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>form</title>
+	<style>
+		body{
+			margin: auto;
+			margin-bottom: 200px;
+			width: 960px;
+		}
+		form{
+			width: 800px;
+			margin: 20px auto;
+		}
+	</style>
+</head>
+<body>
+	<h2>h5表单新input属性与新元素</h2>
+	<form action="" method="POST">
+		姓名：<input type="text" name="username"><br>
+		密码：<input type="password" name="password"><br>
+		右键：<input type="email" name="email"><br>
+		网址：<input type="url" name="url"><br>
+		年龄：<input type="number" min="23" max="50" step="3"><br>
+		搜索：<input type="search" name="search"><br>
+		范围：<input type="range" name="range" min="3" max="15" step="2"><br>
+		电话：<input type="tel" name="telephone"><br>
+		颜色：<input type="color" name="color"><br>
+		日期：<input type="date" name="date"><br>
+		月份：<input type="month" name="month"><br>
+		星期：<input type="week" name="week"><br>
+		
+		<!-- datalist本身不可见 -->
+		<datalist id="listA"> 
+			<option>xx</option>
+			<option>yy</option>
+			<option>zz</option>
+		</datalist>
+		listA: <input type="text" list="listA"><br>
+		
+		<!-- 左右摇晃的进度条 -->
+		进度条1：<progress></progress><br>
+		<!-- 具有进度值的进度条 -->
+		进度条2：<progress value="0" id="progress"></progress><br>
+		
+		刻度：<meter min="0" max="100" low="60" high="85" optimum="100" value="0" id="meter"></meter><br>
+		
+		商品价格：3.5
+		购买数量：<input type="text" value="3">
+		小计：<output>10.5</output><br>
+
+		<input type="submit" value="提交">
+		
+	</form>
+
+	<h2>h5表单新属性</h2>
+	<form action="" id="form2" method="get">
+		用户名：<input type="text" name="username" placeholder="请输入用户名" autofocus required minlength="4" maxlength="12"><br>
+		密码：<input type="password" name="password" placeholder="请输入密码" required><br>
+		邮箱(可多个)：<input type="email" name="email" multiple><br>
+		电话：<input type="tel" pattern="1[345789]\d{9}" required><br>
+		<input type="submit" value="提交">
+	</form>
+	年龄：<input type="number" name="age" form="form2" min="18" max="60">
+	
+	
+	<script>
+		// dynamic meter
+		let meter = document.getElementById('meter');
+		let loopTime1 = 30;
+		function update(){
+			let value = meter.value,
+				step = 1,
+				max = 100;
+			if(value+step < max){
+				meter.value = value+step;
+				setTimeout(update, loopTime1);
+			}else{
+				meter.value = max;
+			}
+		}
+		setTimeout(update, loopTime1);
+
+		// dynamic progress
+		let progress = document.getElementById('progress');
+		progress.value = 0;
+		let loopTime = 50;
+		setTimeout(function(){
+			let value = parseFloat(progress.value),
+				step = 0.01,
+				total = 1;
+			if(value + step < total){
+				progress.value = value+step;
+				setTimeout(arguments.callee, loopTime);
+			}else{
+				progress.value = total;
+				console.log('task finished!');
+			}
+		}, loopTime);
+	</script>
+</body>
+</html>
