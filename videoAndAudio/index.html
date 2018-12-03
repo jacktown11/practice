@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Video</title>
+    <title>Video and Audio</title>
     <style>
         body{
             text-align: center;
-            margin: 20px 0;
+            margin: 50px 0;
         }
         .container{
             position: relative;
@@ -38,9 +39,10 @@
         }
     </style>
 </head>
+
 <body>
 
-    <h2>h5视频</h2>
+    <h2>H5视频</h2>
 
     <div class="container">
         <!-- 视频元素 -->
@@ -69,43 +71,75 @@
             ad = document.getElementById('ad'),
             ctrl = document.getElementById('ctrl'),
             ctrlImg = ctrl.getElementsByTagName('img')[0];
-        for(let key in v1){
-            console.log(key + ' : ' + container[key]);
-        }
 
         // 鼠标移入移出时，按钮图片的显示与隐藏
-        container.onmouseenter = function(){
+        container.onmouseenter = function () {
             // 更具播放状态显示对应图片
-            if(v1.paused){
+            if (v1.paused) {
                 ctrlImg.src = 'static/play.png';
-            }else{
+            } else {
                 ctrlImg.src = 'static/pause.jpg';
             }
             ctrl.style.display = 'block';
-        };  
-        container.onmouseleave = function(){
+        };
+        container.onmouseleave = function () {
             ctrl.style.display = 'none';
         }
 
         // 响应播放、暂停按钮点击
-        ctrl.onclick = function(e){
+        ctrl.onclick = function (e) {
             e.preventDefault();
-            if(v1.paused){
-                ctrlImg.src='static/pause.jpg';
+            if (v1.paused) {
+                ctrlImg.src = 'static/pause.jpg';
                 v1.play();
-            }else{
-                ctrlImg.src='static/play.png';
+            } else {
+                ctrlImg.src = 'static/play.png';
                 v1.pause();
             }
         }
-        
+
         // 监听视频的播放/暂停时间，切换广告图片的显示/隐藏
-        v1.onplay = function(e){
+        v1.onplay = function (e) {
             ad.style.display = 'none';
         };
-        v1.onpause = function(e){
+        v1.onpause = function (e) {
             ad.style.display = 'block';
         }
     </script>
+
+
+    <h2>H5音频</h2>
+    <p>
+        是否播放背景音乐：<input type="checkbox" name="playBGM" value="1">
+    </p>
+    <audio id="a1" src="static/stayAlive.mp3" loop></audio>
+
+    <script>
+        let a1 = document.getElementById('a1'),
+            playCheckbox = document.getElementsByName('playBGM')[0];
+        playCheckbox.onchange = function (e) {
+            if (this.checked) {
+                // 播放，逐渐放大音量
+                a1.volume = 0;
+                a1.play();
+                let volumeStep = 0.1, // 音量递增量
+                    timeStep = 200; // 调大音量时间间隔
+                setTimeout(function addVolume() {
+                    if (a1.volume + volumeStep < 1) {
+                        a1.volume = a1.volume + volumeStep;
+                        setTimeout(addVolume, timeStep);
+                    } else {
+                        a1.volume = 1;
+                    }
+                }, timeStep);
+            } else {
+                a1.pause();
+            }
+        };
+
+    </script>
+
+
 </body>
+
 </html>
