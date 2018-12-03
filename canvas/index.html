@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Canvas</title>
+    <style>
+        body{
+            text-align: center;
+        }
+        canvas{
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h2>Canvas绘图</h2>
+
+    <h3>绘制矩形</h3>
+    <canvas id="c1" width="200" height="100">您的游览器版本太低，请升级！</canvas><br>
+    <canvas id="c2" width="400" height="300">您的游览器版本太低，请升级！</canvas><br>
+    <canvas id="c3" width="600" height="250">您的游览器版本太低，请升级！</canvas><br>
+
+    <script>
+        let ctx1 = document.getElementById('c1').getContext('2d');
+                
+        // 绘制一个矩形
+        ctx1.lineWidth = 1; // 描边宽度（空心）
+        ctx1.strokeStyle = '#f00'; // 描边样式（空心）
+        ctx1.fillStyle = '#000'; // 填充样式/样色（实心）
+        ctx1.strokeRect(0, 0, 100, 50); // 描边一个矩形(x,y,w,h)
+        ctx1.fillRect(100, 0, 100, 50); // 填充一个矩形
+        ctx1.clearRect(50, 0, 100, 100); //清除一个矩形范围内的所有绘图
+        
+        // 在各角落与中心位置绘制多个矩形
+        let ctx2 = document.getElementById('c2').getContext('2d');
+        ctx2.fillStyle = '#0f8';
+        ctx2.fillRect(0,0, 100,80);
+        ctx2.fillRect(300,0, 100,80);
+        ctx2.fillRect(0,220, 100,80);
+        ctx2.fillRect(300,220, 100,80);
+        ctx2.fillRect(150,110, 100,80);
+
+        // 水平垂直往复运动
+        let ctx3 = document.getElementById('c3').getContext('2d');
+        ctx3.fillStyle = '#0f4';
+        let xDirection = 1,
+            yDirection = 1,
+            pxGap = 5,
+            timeGap = 50,
+            x = 0,
+            y = 0,
+            width = 100,
+            height = 50;
+        setInterval(function(){
+            // 水平分量
+            let xInc = xDirection * pxGap;
+            if(x+xInc+width > 600 || x+xInc < 0){
+                // 到头反转
+                xDirection = -xDirection;
+                xInc = -xInc;
+            }
+            // 垂直分量
+            let yInc = yDirection * pxGap;
+            if(y+yInc+height > 250 || y+yInc < 0){
+                // 到头反转
+                yDirection = -yDirection;
+                yInc = -yInc;
+            }
+
+            x += xInc;
+            y += yInc;
+
+            ctx3.clearRect(0, 0, 600, 250);
+            ctx3.fillRect(x, y, width, height);
+        }, timeGap);
+    </script>
+
+    <h3>绘制文本</h3>
+    <canvas id="c4" width="600" height="300">您的游览器版本太低，请升级！</canvas><br>
+    <canvas id="c5" width="600" height="300">您的游览器版本太低，请升级！</canvas><br>
+    <canvas id="c6" width="600" height="300">您的游览器版本太低，请升级！</canvas><br>
+    
+    <script>
+        // 绘制文本
+        let ctx4 = document.getElementById('c4').getContext('2d');
+        ctx4.fillStyle = '#080';
+        ctx4.strokeStyle = '#008';
+        ctx4.strokeRect(0, 20, 100, 80);
+
+        ctx4.font = '30px sans-serif'; // 设置字体与大小
+        ctx4.textBaseline = 'bottom'; // bottom alphabetic 文本基线（垂直对齐方式）
+        ctx4.fillText('hello, tom', 0, 20); // 在(x,y)坐标位置填充一段文本
+
+        ctx4.textBaseline = 'top';
+        ctx4.strokeText('China',0, 100); // 在(x,y)位置描边一段文本
+        let info = ctx4.measureText('good morning'); // 测量文本宽度，返回对象｛width: x｝
+        console.log(info.width);
+        
+        // 在各角落和画布中央绘制文本
+        let ctx5 = document.getElementById('c5').getContext('2d');
+        let str = 'Hello, Canvas';
+        ctx5.font = '24px sans-serif';
+        ctx5.fillStyle = '#f40';
+        ctx5.strokeStyle = '#080';
+        let w = ctx5.measureText(str).width;
+        ctx5.textBaseline = 'top';
+        ctx5.fillText(str, 0, 0);
+        ctx5.fillText(str, 600-w, 0);
+        ctx5.textBaseline = 'bottom';
+        ctx5.fillText(str, 0, 300);
+        ctx5.fillText(str, 600-w, 300);
+        ctx5.fillText(str, (600-w)/2, (300+24)/2);
+        
+        // 文本移动
+        (()=>{
+            let canvas6 = document.getElementById('c6');
+            let ctx6 = canvas6.getContext('2d');
+            let totalWidth = parseInt(canvas6.width),
+                totalHeight = parseInt(canvas6.height),
+                height = 24,
+                xDirection = 1,
+                yDirection = 1,
+                pxGap = 4,
+                timeGap = 50,
+                x = 0, y = 0;
+            let str = 'hello canvas';
+            ctx6.font = height+'px sans-serif';
+            ctx6.fillStyle = '#f40';
+            ctx6.textBaseline = 'top';
+            let width = ctx6.measureText(str).width;
+            setInterval(()=>{
+                // x分量
+                let xInc = pxGap * xDirection;
+                if(x+xInc+width>totalWidth || x+xInc < 0){
+                    xInc = -xInc;
+                    xDirection = -xDirection;
+                }
+                x += xInc;
+
+                // y分量
+                let yInc = pxGap * yDirection;
+                if(y+yInc+height>totalHeight || y+yInc<0){
+                    yInc = -yInc;
+                    yDirection = -yDirection;
+                }
+                y += yInc;
+                
+                ctx6.clearRect(0,0, totalWidth, totalHeight);
+                ctx6.fillText(str, x, y);
+            }, timeGap);
+        })();
+    </script>
+
+    <h2>渐变对象</h2>
+    <canvas id="c7" width="600" height="300"></canvas>
+
+
+    <script>
+        (()=>{
+            let ctx7 = document.getElementById('c7').getContext('2d');
+
+            // 创建渐变对象(x1,y1, x2, y2)
+            let g = ctx7.createLinearGradient(0,0,100,0);
+
+            // 设置颜色点
+            g.addColorStop(0, '#008');
+            g.addColorStop(0.5, '#f00');
+            g.addColorStop(1, '#080');
+
+            // 将该渐变对象设置为画笔填充样式
+            ctx7.fillStyle = g;
+
+            ctx7.fillRect(0,0, 200, 100);
+        })();
+    </script>
+
+    <h2>柱状图</h2>
+    <canvas id="c8" width="960" height="600"></canvas>
+    <script>
+        
+        getData(drawBar);
+
+        // get ./data.json
+        // parse the data and pass it to the callback function
+        function getData(cb){
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = ()=>{
+                if(xhr.readyState === 4){
+                    let data = null;
+                    if(xhr.status >= 200 && xhr.status < 300 || xhr.status === 304){
+                        data = JSON.parse(xhr.responseText);
+                    }
+                    cb&&cb(data);
+                }
+            };
+            xhr.open('GET', './data.json', true);
+            xhr.send(null);
+        }
+        
+        function drawBar(data){
+            let c8 = document.getElementById('c8'),
+                ctx8 = c8.getContext('2d'),
+                width = c8.width,
+                height = c8.height;
+            if(!data){
+                // not valid data, show sorry message.
+                ctx8.font = "24px sans-serif";
+                ctx8.textBaseline = 'top';
+                let str = '抱歉，加载数据失败。';
+                let strWidth = ctx8.measureText(str);
+                ctx8.fillText(str, (width-strWidth)/2, (height-24)/2);
+                return ;
+            }
+
+            const padding = 50,
+                labelHeight = 24,
+                axisWidth = 2,
+                xAxisLength = width - axisWidth - 2 * padding, 
+                yAxisLength = height - 2 * padding - axisWidth - labelHeight,
+                barCount = data.length,
+                barGap = 25,
+                barWidth = (xAxisLength - (barCount+1)*barGap) / barCount;
+            
+            // 计算数据中最大值
+            let maxValue = data.reduce((prev, cur, index, arr)=>{
+                return prev.value>cur.value?prev:cur;
+            }).value;
+            
+            // 绘制各个柱形图
+            data.forEach((item, index)=>{
+                // 计算各个柱形图的坐标与尺寸
+                item.width = barWidth;
+                item.height = yAxisLength * 0.9 * item.value/maxValue;
+                item.x = padding + axisWidth + barGap + (barGap+barWidth)*index;
+                item.y = padding + yAxisLength - item.height;
+                
+                // 绘制柱形图
+                let g = ctx8.createLinearGradient(0, item.y, 0, item.y+item.height);
+                g.addColorStop(0, '#088');
+                g.addColorStop(1, '#083');
+                ctx8.fillStyle = g;
+                ctx8.fillRect(item.x, item.y, item.width, item.height);
+
+                // 绘制label
+                let strWidth = ctx8.measureText(item.label).width;
+                ctx8.textBaseline = 'top';
+                ctx8.font = labelHeight + 'px sans-serif';
+                ctx8.fillStyle = '#f40';
+                ctx8.fillText(item.label, item.x + barWidth / 2 - strWidth / 2, padding + yAxisLength);
+                
+                // 绘制值
+                strWidth = ctx8.measureText(item.value.toString()).width;
+                ctx8.textBaseline = 'bottom';
+                ctx8.fillStyle = '#080';
+                ctx8.fillText(item.value, item.x + barWidth / 2 - strWidth / 2, item.y);
+            });
+            
+            // 绘制横纵坐标线
+            ctx8.lineWidth = 2;
+            ctx8.strokeStyle = '#222';
+            ctx8.beginPath();
+            ctx8.moveTo(padding, padding + yAxisLength);
+            ctx8.lineTo(padding, padding);
+            ctx8.stroke();
+
+            ctx8.beginPath();
+            ctx8.moveTo(padding, padding + yAxisLength);
+            ctx8.lineTo(padding + xAxisLength, padding + yAxisLength);
+            ctx8.stroke();
+        }
+    </script>
+
+</body>
+</html>
