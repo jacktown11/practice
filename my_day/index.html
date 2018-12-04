@@ -115,9 +115,10 @@
         .large .day{
             width: 12px;
             height: 12px;
+            border-color: #aaa !important; 
         }
         .day:hover{
-            border-color: #000;
+            border-color: #000 !important; 
         }
         
     </style>
@@ -220,6 +221,7 @@
                     span.className += ' passed';
                     let color = Color.getColorByScore(score);
                     span.style.backgroundColor = color;
+                    span.style.borderColor = color;
                 }
                 this.node = span;
             },
