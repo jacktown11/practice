@@ -6,79 +6,196 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>my-day</title>
     <style>
+        .fl{float: left;}
+        .fr{float: right;}
         body{
             width: 1260px;
             margin: auto;
             margin-top: 0px;
         }
-        p.count{
+        .container{
+            width: 100%;
+            margin: 0px auto 40px auto;
+            position: relative;
+        }
+        
+        /*顶部信息条*/
+        .info{
+            position: fixed;
+            background-color: #cff;
+            top: 0px;
+            left: 0;
+            right: 0;
+            padding: 5px 25px 0px;
+            height: 75px;
+            text-align: center;
+            box-shadow: 0 0 2px #888;
+        }
+
+        .info::after,
+        .container::after{
+            content: '';
+            display: block;
+            height: 0px;
+            clear: both;
+        }
+        .title,
+        .daysInfo,
+        .setting{
+            display: inline-block;
+            vertical-align: top;
+            height: 66px;
+        }
+        .title{
+            margin-right: 40px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            color: #800080;
+        }
+        .daysInfo{
             text-align: center;
         }
-        .gone-num{
+        .daysInfo td{
+            padding: 5px 15px;
             font-size: 130%;
             font-weight: bold;
-            color: #088;
-            position: relative;
-            top: 2px;
         }
         .total-num{
             font-size: 100%;
         }
+        .left-num{
+            color: #f40;
+        }
+        .gone-num{
+            color: #666;
+        }
+        .average-score{
+            color: #088;
+        }
+        .current-score{
+            min-width: 45px;
+        }
+        
+        /* 字体设置按钮 */
+        .setting{
+            height: 40px;
+            padding: 16px 0 0 60px;
+        }
+        .setting button{
+            width: 48px;
+            height: 36px;
+            color: #06c;
+            font-size: 100%;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            outline: none;
+        }
+        button.selected{
+            background-color: #ccc;
+        }
+        button:hover{
+            border-color: #aaa;
+        }
 
-        .bar{
-            width: 100%;
-            height: 8px;
-            background-color: #ddd;
-            margin-bottom: 5px;
+        /* 方格样式 */
+        .days{
+            padding-top: 84px;
         }
-        .gone{
-            width: 33%;
-            height: 100%;
-            background-color: #080;
-        }
-
-        .container{
-            width: 100%;
-            margin: auto;
-        }
-        .container p{
-            margin: 0px;
-            padding: 0px;
+        .days .day{
             float: left;
+            border: 1px solid #aaa;
+            cursor: pointer;
             width: 3px;
             height: 3px;
-            border: 1px solid #ddd;
-            cursor: pointer;
         }
-        .container p:hover{
+        .middle .day{
+            width: 6px;
+            height: 6px;
+        }
+        .large .day{
+            width: 12px;
+            height: 12px;
+        }
+        .day:hover{
             border-color: #000;
-        }
-        p.passed{
-            background-color: #080;
-            border-color: transparent;
         }
         
     </style>
 </head>
 <body>
-    <!-- <div class="bar">
-        <div class="gone">
 
+    <div class="container middle">
+
+        <div class="info">
+            <h2 class="title">My 75 Years</h2>
+            <table class="daysInfo">
+                <tr>
+                    <th>总计天数</th>
+                    <th>已活天数</th>
+                    <th>剩余天数</th>
+                    <th>平均得分</th>
+                    <th>当前日期</th>
+                    <th>当前分数</th>
+                </tr>
+                <tr id="daysInfo">
+                    <td class="total-num"></td>
+                    <td class="gone-num"></td>
+                    <td class="left-num"></td>
+                    <td class="average-score"></td>
+                    <td class="current-date"></td>
+                    <td class="current-score"></td>
+                </tr>
+            </table>
+            <div class="setting">
+                <button data-size="small" class="small">小</button>
+                <button data-size="middle" class="middle selected">中</button>
+                <button data-size="large" class="large">大</button>
+            </div>
         </div>
-    </div> -->
-    <div class="container">
-        <!-- <p class="passed" data-score="80" data-day="2018-10-23" title="2018-10-23"></p> -->
+        <div class="days">
+            <!-- <span class="day" data-score="80" data-day="2018-10-23"></span> -->
+        </div>
     </div>
 
     <script>
-    
+        // 信息显示
+        let daysInfo = {
+            node: document.querySelector('.daysInfo'),
+            currentDate: document.querySelector('.daysInfo .current-date'),
+            currentScore: document.querySelector('.daysInfo .current-score'),
+            refresh(date, score){
+                this.currentDate.innerHTML = date;
+                this.currentScore.innerHTML = score;
+            }
+        };
+
+        // 大小控制
+        let setting = {
+            node: document.querySelector('.setting'),
+            buttons: [].slice.apply(document.querySelectorAll('.setting button')),
+            init(){
+                setting.node.onclick = function(e){
+                    let target = e.target;
+                    if(target.tagName.toLowerCase() === 'button'){
+                        setting.buttons.forEach(item=>{
+                            item.classList.remove('selected');
+                            app.container.classList.remove(item.getAttribute('data-size'));
+                        });
+                        target.classList.add('selected');
+                        app.container.classList.add(target.getAttribute('data-size'));
+                    }
+                };
+            }
+        };
+
+
         // 该对象用于表示了某天的日期及其在文档中对应的节点
         function Day(year, month, day) {
             this.node = null;
             this.year = year;
             this.month = month; // start form 0
             this.day = day;
-            this.dateStr = year + '-' + (month + 1) + '-' + day;
+            this.dateStr = year + '-' +('0'+(month + 1)).slice(-2) + '-' + ('0'+day).slice(-2);
             this.isPassed = new Date(this.year, this.month, this.day).getTime() + Day.MS_OF_ONE_DAY < Date.now();
             this.init(); //创建出该日期的文档节点（未插入文档）
         }
@@ -92,21 +209,23 @@
             })(),
             init() {
                 // 创建出该日期的文档节点（未插入文档）
-                let p = document.createElement('p');
-                p.setAttribute('data-day', this.dateStr);
+                let span = document.createElement('span');
+                span.setAttribute('data-day', this.dateStr);
                 let score = scoreData.getScoreByDate(this.year, this.month, this.day);
                 if (!score) score = this.isPassed ? scoreData.defaultScore : 0;
-                p.setAttribute('data-score', score);
-                p.setAttribute('title', this.dateStr + ' 得分' + score);
+                span.setAttribute('data-score', score);
+                span.setAttribute('data-date', this.dateStr);
+                span.className = 'day';
                 if (this.isPassed) {
-                    p.className = 'passed';
+                    span.className += ' passed';
                     let color = Color.getColorByScore(score);
-                    p.style.backgroundColor = color;
+                    span.style.backgroundColor = color;
                 }
-                this.node = p;
+                this.node = span;
             },
 
         };
+        
         let birthday = {
             year: 1993,
             month: 4, // start from 0
@@ -185,7 +304,6 @@
                 return scoreSum/todayIndex;
             }
         };
-        
         let Color = {
             getColorByScore(score) {
                 // 获取某得分对应的背景色，通过对rgb值查表线性插入
@@ -197,63 +315,67 @@
                 };
                 let len = table.score.length,
                     min = table.score[0], //最低分
-                    max = table.score[table.length - 1]; //最低分
+                    max = table.score[table.score.length - 1]; //最低分
                 score = score < min ? min : (score > max ? max : score);
                 let minIndex = 0, maxIndex = 1;
                 for (let i = 0; i < len; i++) {
-                    if (score >= table.score[i]) {
+                    if (score > table.score[i]) {
                         minIndex = i;
                     } else {
                         break;
                     }
                 }
                 maxIndex = Math.min(minIndex + 1, len - 1);
-
                 let red = table.red[minIndex] + (table.red[maxIndex] - table.red[minIndex]) / (table.score[maxIndex] - table.score[minIndex]) * (score - table.score[minIndex]);
                 let green = table.green[minIndex] + (table.green[maxIndex] - table.green[minIndex]) / (table.score[maxIndex] - table.score[minIndex]) * (score - table.score[minIndex]);
                 let blue = table.blue[minIndex] + (table.blue[maxIndex] - table.blue[minIndex]) / (table.score[maxIndex] - table.score[minIndex]) * (score - table.score[minIndex]);
                 return 'rgb(' + red.toFixed(0) + ',' + green.toFixed(0) + ',' + blue.toFixed(0) + ')';
             }
-        }
+        };
         
         let app = {
             container: document.getElementsByClassName('container')[0],
+            days: document.getElementsByClassName('days')[0],
             YEAR_TO_LIVE: 75,
             DAYS_TO_LIVE: (new Date(birthday.year+75, birthday.month, birthday.day).getTime() - birthday.date.getTime())/Day.MS_OF_ONE_DAY + 1,
             start(){
                 // 启动页面
                 // 请求score.json，并渲染
+                setting.init();
                 scoreData.initScoreData(this.initRender.bind(this));
+                this.setHandler();
             },
             initRender(){
                 // 在已经得到个日期得分数据的情况下，渲染整个页面
-                this.showTitle();
-                this.showBar();
+                this.showDaysInfo();
                 let frag = document.createDocumentFragment();
                 let currentDate = birthday.date;
                 for(let i = 0; i < this.DAYS_TO_LIVE; i++){
-                    let p = new Day(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()).node;
-                    frag.appendChild(p);
+                    let span = new Day(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()).node;
+                    frag.appendChild(span);
                     currentDate = new Date(currentDate.getTime() + Day.MS_OF_ONE_DAY);
                 }
-                this.container.appendChild(frag);
+                this.days.appendChild(frag);
             },
-            showTitle(){
-                let p = document.createElement('p');
-                let daysPassed = ((Date.now() - birthday.date.getTime()) / Day.MS_OF_ONE_DAY).toFixed(0);
-                p.className = 'count';
-                p.innerHTML = '如果我可以活75年，那么还剩下&nbsp;<span class="gone-num">'+ (this.DAYS_TO_LIVE-daysPassed)+'</span>&nbsp;天';
-                document.body.insertBefore(p, this.container);
+            showDaysInfo(){
+                let daysInfo = document.getElementById('daysInfo');
+                let tds = daysInfo.getElementsByTagName('td');
+                let goneDays = ((Date.now() - birthday.date.getTime()) / Day.MS_OF_ONE_DAY).toFixed(0);
+                tds[0].innerHTML = this.DAYS_TO_LIVE;
+                tds[1].innerHTML = goneDays;
+                tds[2].innerHTML = this.DAYS_TO_LIVE - goneDays;
+                tds[3].innerHTML = scoreData.getAverage().toFixed(2);
+                tds[4].innerHTML = '0000-00-00';
+                tds[5].innerHTML = '00';
             },
-            showBar(){
-                let bar = document.createElement('div');
-                bar.className = 'bar';
-                let gone = document.createElement('div');
-                gone.className = 'gone';
-                gone.style.backgroundColor = Color.getColorByScore(scoreData.getAverage());
-                gone.style.width = (scoreData.todayIndex+1)/app.DAYS_TO_LIVE * 100 + '%';
-                bar.appendChild(gone);
-                document.body.insertBefore(bar, this.container);
+            setHandler(){
+                // 鼠标移入方格时，显示当前方格的日期和分数
+                this.days.onmouseover = function(e){
+                    let target = e.target;
+                    if(target.tagName.toLowerCase() === 'span'){
+                        daysInfo.refresh(target.getAttribute('data-date'), target.getAttribute('data-score'));
+                    }
+                };
             }
         };
         app.start();
