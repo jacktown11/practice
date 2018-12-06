@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- xmlns xml命名空间（namespace），指定当前文档标准 -->
+<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" fill="#f40"></rect>
+</svg>
+
+
