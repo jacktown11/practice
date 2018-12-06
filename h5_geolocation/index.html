@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Geolocation</title>
+    <style>
+        body{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>浏览器原生地理定位</h2>
+    <button id="btn1">读取定位信息</button>
+    <p id="info1"></p>
+    <script>
+        btn1.onclick = function(e){
+            info1.innerHTML = 'getting your position ... <br>';
+            navigator.geolocation.getCurrentPosition(
+                // 成功返回位置信息
+                function success(pos){
+                    info1.innerHTML += '读取定位数据成功';
+                    let info = {
+                        time: pos.timestamp,
+                        '纬度': pos.coords.latitude,
+                        '经度': pos.coords.longtitude,
+                        '海拔': pos.coords.altitude,
+                        '速度': pos.speed
+                    };
+                    for(let key in info){
+                        info1.innerHTML += key + ": " + info + '<br>';
+                    }
+                },
+                // 读取定位信息错误
+                function error(err){
+                    info1.innerHTML += '获取定位信息失败' + '<br>';
+                    info1.innerHTML += err.message + '<br>';
+                    info1.innerHTML += err.code + '<br>';
+                }
+            );
+        };
+
+    </script>
+
+    <h2>百度地理定位</h2>
+
+    <style type="text/css">
+        #allmap {
+            width: 600px;
+            height: 400px;
+            overflow: hidden;
+            margin: auto;
+            font-family: "微软雅黑", sans-serif;
+        }
+    </style>
+    <div id="allmap"></div>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=7stA9GpBFOb7DQuQx81dMHs1h2ZWCVwR"></script>
+    <script type="text/javascript">
+    (function(){
+        	// 百度地图API功能
+        var map = new BMap.Map("allmap");    // 创建Map实例
+        map.centerAndZoom(new BMap.Point(103.838936, 30.082057), 16);  // 初始化地图,设置中心点坐标和地图级别
+        
+        map.addControl(new BMap.NavigationControl());  map.addControl(new BMap.ScaleControl());
+        map.addControl(new BMap.OverviewMapControl()); 
+        map.addControl(new BMap.MapTypeControl());
+        map.setCurrentCity("眉山");
+
+        // map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
+        map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    })();
+        
+    </script>
+</body>
+</html>
