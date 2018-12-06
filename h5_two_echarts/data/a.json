@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Android", "value": 500
+    },
+    {
+        "name": "IOS", "value": 600
+    },
+    {
+        "name": "华为", "value": 450
+    },
+    {
+        "name": "其他", "value": 480
+    }
+]

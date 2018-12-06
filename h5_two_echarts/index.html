@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>第三方会图库</title>
+    <style>
+        body{
+            text-align: center;
+        }
+    </style>
+    <script src="./js/ajax.js"></script>
+</head>
+<body>
+    <h1>第三方绘图库的使用</h1>
+
+    <h2>tow.js demo</h2>
+    <div id="box"></div>
+    <script src="./js/two.min.js"></script>
+    <script>
+        (function(){
+            // 常见tow对象，指定画布宽度，canvas, svg
+            // (高级浏览器中可以直接使用id引用元素)
+            let two = new Two({
+                width: 800,
+                height: 400,
+                type: Two.Types.svg
+            }).appendTo(box); 
+    
+            // 创建矩形 圆形
+            let c = two.makeCircle(-100, 0, 100);
+            let r = two.makeRectangle(100, 0, 200, 200);
+    
+            // 旋转，在图形对象上设置属性，不相互影响、不累加
+            // r.rotation = 30/180*Math.PI;
+            
+            // two.js中小组（group）本身透明不可见，可用于放置多个其他图形，
+            // 默认原点（0，0）,小组中元素定位相对于小组原点
+            let g= two.makeGroup(r,c);
+            g.translation.set(400,200); // 平移原点
+            // g.rotation = 30*Math.PI/180;
+            
+            // two.js动画原理：调用two.play()
+            // 每秒钟调用60次two.update();
+            // 每秒调用一次update事件
+            let rad = 0,
+                radStep = 1/180*Math.PI;
+            two.on('update', function(){
+                rad += radStep;
+                g.rotation = rad;
+            });
+    
+            // 把绘制图形更新到DOM树
+            // two.update();
+            two.play();
+        })();
+    </script>
+
+    <h2>ECharts demo1</h2>
+    <div id="box1" style="width:600px; height: 400px;margin:auto;"></div>
+    <script src='./js/echarts.common.min.js'></script>
+    <script>
+        (function(){
+            // 指定图形的配置参数
+            let option = {
+                title: {
+                    text: '销售统计数据'
+                },
+                tooltip: {},
+                legend: {
+                    data: ['数据源来自网络']
+                },
+                xAxis:{
+                    data:['Android','IOS','华为','other']
+                },
+                yAxis:{},
+                series: [
+                    {
+                        name: '销售量',
+                        type: 'bar',
+                        data:[500,200,360,100]
+                    }
+                ]
+            };
+
+            // 初始化实例
+            let chart = echarts.init(box1);
+
+            // 使用配置参数显示图表
+            chart.setOption(option);
+        })();
+    </script>
+
+    <h2>ECharts demo2</h2>
+    <div id="box2" style="width:600px; height: 400px;margin:auto;"></div>
+    <script>
+        (function(){
+            let option = {
+                title: {text: '销售统计数据'},
+                series: {
+                    name: '销售量',
+                    type: 'pie',
+                    radius: '60%',
+                    data: null
+                }
+            };
+            let chart = echarts.init(box2);
+
+            tjk.ajax({
+                url: './data/a.json',
+                type: 'get',
+                dataType: 'json',
+                success(data){
+                    option.series.data = data;
+                    chart.setOption(option);
+                }
+            })
+        })();
+    </script>
+</body>
+</html>
