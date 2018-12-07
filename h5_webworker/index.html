@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WebWorker</title>
+    <style>
+        body{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebWorker demo</h1>
+
+    <h2>单线程执行时可能出现的页面阻塞</h2>
+    <button>按钮一</button>
+    <!-- 下面这个js执行很长时间的话，会导致页面阻塞 -->
+    <!-- <script src="./js/1.js"></script> -->
+    <script>
+        (function(){
+            let w = new Worker('./js/1.js');
+        })();
+    </script>
+    <button>按钮二</button>
+
+    <h2>主线程与Worker线程间数据传输</h2>
+    <div class="container">
+        输入一个整数<input type="number" name="num2" id="num2">
+        <button id="btn2">查看是否是素数</button>
+        <p id="info2"></p>
+    </div>
+    <script>
+    (function(){
+        let w = new Worker('./js/2.js');
+        btn2.onclick =function(){
+            // 将用户输入的数字发送给worker计算
+            w.postMessage(num2.value);
+        };
+        w.onmessage = function(e){
+            // 根据worker传回来的计算结果显示
+            info2.innerHTML = e.data.num + (e.data.isPrime?'是':'不是') + '素数';
+        };
+    })();
+    </script>
+    
+     
+</body>
+</html>
