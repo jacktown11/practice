@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>logout</title>
+    <style>
+        body{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <p>您已经成功退出，3秒将返回首页。您也可以<a href="./index.html">立即返回</a>。</p>
+    <script>
+        (()=>{
+            let goTo = function(url){
+                window.location.href=url;
+            };
+            sessionStorage.removeItem('username');
+            sessionStorage.removeItem('password');
+            setTimeout(()=>{
+                goTo('./index.html');
+            }, 3000);
+        })();  
+    </script>
+</body>
+</html>

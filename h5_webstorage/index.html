@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>web storage</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <style>
+        html,body{
+            margin: 0px;
+            padding: 0px;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>web storage</h1>
+    
+    <hr>
+    <h2>sessionStorage 基本使用</h2>
+    <a href="./2.html">去往页面2</a>
+    <p id="info"></p>
+    <script>
+        (()=>{
+            let name = 'jack',
+                age = 24;
+            sessionStorage['name'] = name;
+            sessionStorage.setItem('age', age);
+
+            sessionStorage.removeItem('name');
+        })();
+    </script>
+
+    <hr>
+    <h2>sessionStorage 登录与退出</h2>
+    <div class="container2">
+        <p id="info2"></p>
+    </div>
+    <script>
+        (()=>{
+            let username = sessionStorage.getItem('username'),
+                password = sessionStorage.getItem('password');
+            console.log(username, password);
+            if (username && password) {
+                info2.innerHTML = `欢迎您，${username} <a href="./logout.html">退出</a>`
+            } else {
+                info2.innerHTML = `<a href="./login.html">登录</a>`
+            }
+        })();   
+    </script>
+
+    <hr>
+    <h2>localStorage 保存主体样式</h2>
+    <div class="container3">
+        <select name="theme" id="theme">
+            <option value="blue">蓝色天空</option>
+            <option value="pink">芭比公主</option>
+            <option value="dark">暗黑主题</option>
+        </select><br>
+        <a href="./usercenter.html">前往用户中心</a>
+    </div>
+    <script>
+    (()=>{
+        theme.onchange = function(){
+            // get current selection
+            let themeVal = this.value;
+
+            // save to localStorage
+            localStorage.setItem('theme', themeVal);
+
+            // change theme of current page
+            document.body.className = themeVal;
+        };
+
+        
+        
+        let themeVal = localStorage.getItem('theme');
+        themeVal = themeVal || 'blue'; // use blue by default
+        let option = document.querySelector(`[value="${themeVal}"]`);
+        option.setAttribute('selected', true);
+        document.body.className = themeVal;
+
+    })();
+    </script>
+
+    <hr>
+    <style>
+        #addBtn{
+            cursor: pointer;
+        }
+    </style>
+    <h2>综合案例：单词添加与测试</h2>
+    <div id="container4">
+        <h3>单词添加</h3>
+        <form action="" id="addForm">
+            英文：<input type="text" id="english" name="english"><br><br>
+            中文：<input type="text" id="chinese" name="chinese"><br><br>
+            <button id="addBtn" type="submit">添加单词</button>
+        </form>
+        <p id="info4" style="width: 300px; height: 33px;line-height: 33px;margin: 16px auto; border: 1px solid #088;">等待您添加单词 ...</p>
+        <h3>单词测试</h3>
+        <a href="./test.html">前往测试页面</a>
+    </div>
+    <script>
+    (()=>{
+        const prefix = 'word_';
+        addForm.onsubmit = function(e){
+            e.preventDefault();
+            // 单词添加
+            let eWord = english.value.trim(),
+                cWord = chinese.value.trim();
+            if(eWord && cWord){
+                // 存储到localStorage，输出成功信息
+                localStorage.setItem(prefix+eWord, cWord);
+                info4.innerHTML = `[${eWord}: ${cWord}] 添加成功!`;
+                // 清空输入狂
+                english.value = '';
+                chinese.value = '';
+            }else{
+                info4.innerHTML = '中英文均不能为空！'
+            }
+        };
+    })();
+    </script>
+
+</body>
+</html>

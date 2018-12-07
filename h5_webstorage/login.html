@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>login</title>
+    <style>
+        body{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form id="loginForm" action="#">
+        用户名：<input id="username" type="text" name="username" required><br>
+        密码：<input id="password" type="text" name="password" required><br>
+        <button type="submit">登录</button>
+    </form>
+    <p id="info"></p>
+    <script>
+        (function(){
+            let goTo = function (url) {
+                window.location.href = url;
+            };
+            loginForm.onsubmit = function(e){
+                e.preventDefault();
+                let _username = username.value,
+                    _password = password.value;
+                console.log(_username, _password);
+                if(_username && _password){
+                    // 将用户登录信息存入sessionStorage
+                    sessionStorage.setItem('username', _username);
+                    sessionStorage.setItem('password', _password);
+
+                    // 3秒后返回主页
+                    info.innerHTML = '已登录成功，3秒后将自动跳转回首页。您也可以<a href="./index.html">立即返回</a>。';
+                    setTimeout(() => {
+                        goTo('./index.html');
+                    }, 3000);
+                }else{
+                    info.innerHTML = '用户名和密码不能为空';
+                }
+            }
+        })();
+    </script>
+</body>
+</html>

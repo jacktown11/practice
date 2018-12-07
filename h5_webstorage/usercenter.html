@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>用户中心</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <style>
+        body{
+            width: 800px;
+            margin: auto;
+            height: 800px;
+            border: 1px solid #222;
+        }
+        p{
+            height: 100%;
+            line-height: 800px;
+        }
+        
+    </style>
+</head>
+<body>
+    <a href="./index.html">返回主页面</a>
+    <p>用户中心</p>
+    <script>
+    (()=>{
+        let theme = localStorage.getItem('theme');
+        document.body.className = theme;
+
+        window.onstorage = function (e) {
+            document.body.className = localStorage.getItem('theme');
+        };
+    })();
+    </script>
+</body>
+</html>

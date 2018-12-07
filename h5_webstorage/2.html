@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>页面2</title>
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+        <h1>web storage 页面2</h1>
+        
+        <a href="./index.html">去往主页面</a>
+        <p id="info"></p>
+        <script>
+        (function(){
+            let store = {
+                name: sessionStorage.getItem('name'),
+                age: sessionStorage['age'],
+                key0 : sessionStorage.key(0),
+                length: sessionStorage.length
+            };
+            for(let key in store){
+                info.innerHTML += key + ": " + store[key] + '<br>';
+            }
+        })();
+        </script>
+
+</body>
+</html>

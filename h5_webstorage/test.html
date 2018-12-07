@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test</title>
+    <style>
+        body{
+            text-align: center;
+        }
+        ul{
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h2>单词测试</h2>
+        <form action="" id="wordlist">
+            <button type="submit">提交测试</button>
+        </form><br>
+        <a href="./index.html">放弃测试，返回单词页</a>
+    </div>
+    <script>
+    (()=>{
+        const prefix = 'word_';
+        let prepareTest = function(){
+            let frag = document.createDocumentFragment(),
+                ul = document.createElement('ul');
+            for(let i = 0; i < localStorage.length; i++){
+                let li = document.createElement('li'),
+                    key = localStorage.key(i);
+                if(key.startsWith(prefix)){
+                    let english = key.slice(prefix.length);
+                    let chinese = localStorage.getItem(key);
+                    li.innerHTML = `<span style="display:inline-block;width: 60px;text-align:left;">${english}</span>`;
+                    li.innerHTML += `<input type="text" name="${english}">`
+                    ul.appendChild(li);
+                }
+            }
+            frag.appendChild(ul);
+            wordlist.prepend(frag);
+        };
+        wordlist.onsubmit =function(e){
+            e.preventDefault();
+            let result = {
+                total: localStorage.length,
+                right: 0,
+                wrong: 0
+            };
+            for(let formItem of wordlist.elements){
+                let name = formItem.getAttribute('name'),
+                    value = formItem.value;
+                if(value===localStorage.getItem(prefix+name)) result.right++;
+            }
+            result.wrong = result.total - result.right;
+
+            for(let key in result){
+                sessionStorage.setItem(key, result[key]);
+            }
+
+            window.location.href="./result.html";
+        };
+
+        prepareTest();
+    })();
+    </script>
+</body>
+</html>
