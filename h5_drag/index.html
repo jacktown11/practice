@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>drag and drop</title>
+    <style>
+        body{
+            text-align: center;
+        }
+        .info{
+            display: inline-block;
+            width: 400px;
+            height: 200px;
+            margin: auto;
+            overflow: scroll;
+            border: 1px solid #088;
+        }
+    </style>
+</head>
+<body>
+    <h1>drag and drop demo</h1>
+
+    <style>
+        #img1,#info1{
+            display: inline-block;
+        }
+        
+    </style>
+    <h2>拖动元对象可能触发的事件</h2>
+    <div>
+        <img id="img1" src="./img/disc.png" alt="复刻回忆">
+        <p id="info1" class="info"></p>
+    </div>
+    <script>
+        (function(){
+            let show = function (str) {
+                if (!str) {
+                    info1.innerHTML = '';
+                } else {
+                    info1.innerHTML = str + '<br>' + info1.innerHTML;
+                }
+            };
+            // 源对象拖动开始
+            img1.ondragstart = function(){
+                show();
+                show('拖动开始')
+            };
+            // 源对象拖动中
+            img1.ondrag = function(){
+                show('拖动中');
+            };
+            
+            // 源对象拖动结束
+            img1.ondragend = function(){
+                show('拖动结束');
+            };
+        })();
+    </script>
+
+    <style>
+        #img2{
+            vertical-align: top;
+        }
+        #span2{
+            vertical-align: top;
+            display: inline-block;
+            width: 400px;
+            height: 200px;
+            background-color: #888;
+            font-size: 24px;
+            color: #fff;
+        }
+    </style>
+    <h2>拖动元对象可能触发的事件</h2>
+    <div class="container2">
+        <img id="img2" src="./img/disc.png" alt="复刻回忆">
+        <span id="span2">将左侧图片拖进来</span>
+        <p id="info2" class="info"></p>
+    </div>
+    <script>
+    (function(){
+        let show = function(str){
+            if(!str){
+                info2.innerHTML = '';
+            }else{
+                info2.innerHTML = str + '<br>' + info2.innerHTML;
+            }
+        };
+        img2.ondragstart = function(){
+            show();
+        }
+        span2.ondragenter = function(e){
+            show('拖动着进入')
+        };
+        span2.ondragover = function(e){
+            show('悬停中');
+            e.preventDefault();
+        };
+        span2.ondragleave = function(){
+            show('拖动着离开');
+        };
+        span2.ondrop = function(){
+            show('释放');
+        };
+        
+    })();
+    </script>
+
+    <style>
+        #container3 img{
+            width: 80px;
+            height: 80px;
+        }
+        #trash3{
+            width: 300px;
+            height: 200px;
+            background-color: #333;
+            color: #fff;
+            line-height: 200px;
+            font-size: 24px;
+            display: inline-block;
+        }
+    </style>
+    <h2>元素拖动删除</h2>
+    <div id="container3">
+        <img src="./img/disc.png" alt="图片1" id="img31">
+        <img src="./img/bg.jpg" alt="图片2" id="img32">
+        <img src="./img/p1.png" alt="图片3" id="img33">
+        <img src="./img/p2.png" alt="图片4" id="img34">
+        <img src="./img/p3.png" alt="图片5" id="img35">
+    </div>
+    <div id="trash3">垃圾桶</div>
+    <script>
+    (function(){
+        let ele = null;
+        container3.ondragstart = function(e){
+            let target = e.target;
+            if(target.parentNode === this){
+                ele = target;
+            }
+        };
+        trash3.ondragover = function(e){e.preventDefault();}
+
+        trash3.ondrop = function(e){
+            if(ele && ele.parentNode === container3){
+                container3.removeChild(ele);
+            }
+        };
+        container3.ondragend = function(e){
+            // 如果该元素并没有被删除
+            ele = null;
+        };
+    })();
+    </script>
+</body>
+</html>
