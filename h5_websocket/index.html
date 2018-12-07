@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>websocket</title>
+    <style>
+        body{
+            margin-top: 50px;
+            text-align: center;
+        }
+        p{
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            color: #aaa;
+            margin-top: 0px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>WebSocket 客户端</h1>
+    <button id="openWs">创建连接</button>
+    <button id="closeWs">关闭ws</button>
+    <p>由于没有后端服务器，本页面并不能实现具体功能，但您可以查看源代码。</p>
+    <script>
+    (()=>{
+        let socket = null;
+        openWs.onclick = function(){
+            socket = new WebSocket('ws://127.0.0.1:9001');
+            socket.onopen = function(e){
+                socket.send('hello from browser');
+            };
+            socket.onmessage = function(e){
+                console.log(e.data);
+            };
+        };
+        closeWs.onclick = function(e){
+            socket && socket.close();
+        };
+    })();
+    </script>
+</body>
+</html>
