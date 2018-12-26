@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue component exercise</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+    </style>
+</head>
+<body>
+    <h2>vue component exercise</h2>
+    <div id="app">
+        <my-h1></my-h1>
+        <hr>
+        
+        <my-game></my-game>
+        <hr>
+
+        <my-cal></my-cal>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+
+    <script>
+        Vue.component('my-h1', {
+            template: `
+                <h1 :style="{opacity: opacityVal}">
+                this is title
+                </h1>
+            `,
+            data(){
+                return {
+                    opacityVal: 0
+                };
+            },
+            mounted(){
+                let timeStep = 50,
+                    opacityStep = 0.01,
+                    sign = 1; // 1 or -1
+                setInterval(()=>{
+                    let add = sign * opacityStep,
+                        newOpacity = this.opacityVal + add;
+                    if(newOpacity > 1 || newOpacity < 0){
+                        add = -add;
+                        sign = -sign;
+                        newOpacity = this.opacityVal + add;
+                    }
+                    this.opacityVal = newOpacity;
+                }, timeStep);
+            }
+        });
+
+        Vue.component('my-game',{
+            template: `
+                <div>
+                请猜测数字：<input type="number" v-model.number="guess"><br>
+                <p>{{info}}</p>
+                </div>
+            `,
+            data(){
+                return {
+                    guess: '',
+                    answer: this.rn(0,100),
+                    info: '请输入0-100的数字'
+                };
+            },
+            methods: {
+                rn(min, max){
+                    return Math.floor(min+Math.random()*(max-min+1));
+                }
+            },
+            watch: {
+                guess(newVal, oldVal){
+                    console.log(this.answer);
+                    let n = parseInt(newVal);
+
+                    if(newVal > this.answer){
+                        this.info = '太大了';
+                    }else if(newVal < this.answer){
+                        this.info = '太小了';
+                    }else if(newVal === this.answer){
+                        this.info = '恭喜您，猜对了！';
+                    }else{
+                        this.info = '非法数字';
+                    }
+                }
+            }
+            
+        });
+
+        Vue.component('my-cal', {
+            template: `
+                <div>
+                    <h2>My Calculator</h2>
+                    <input type="text" v-model="numA">
+                    <select v-model="operator">
+                        <option value="+">+</option>
+                        <option value="-">-</option>
+                        <option value="*">*</option>
+                        <option value="/">/</option>
+                    </select>
+                    <input type="text" v-model="numB">
+                    =
+                    <span>{{result}}</span>
+                </div>
+            `,
+            data(){
+                return {
+                    numA: 0,
+                    numB: 0,
+                    operator: '+'
+                };
+            },
+            computed: {
+                result(){
+                    let numA = parseFloat(this.numA),
+                        numB = parseFloat(this.numB);
+                    switch(this.operator){
+                        case '+':
+                            return numA + numB;
+                        case '-':
+                            return numA - numB;
+                        case '*':
+                            return numA * numB;
+                        case '/':
+                            return numA / numB;
+                        default:
+                            return ''
+                    }
+                }
+            }
+        });
+        
+        
+        new Vue({
+            el: '#app',
+        })
+
+    </script>
+</body>
+</html>

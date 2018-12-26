@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 组件练习8</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+    </style>
+</head>
+<body>
+    <h2>vue 组件练习8</h2>
+    <div id="app">
+        <my-parent></my-parent>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+
+    <script>
+        Vue.component('my-parent', {
+            template: `
+            <div>
+                <my-child @dataEvent="addData" userName="tom"></my-child>
+                <my-child @dataEvent="addData" userName="jerry"></my-child>
+                <ul>
+                    <li v-for="item in list">{{item}}</li>
+                </ul>
+            </div>
+            `,
+            data(){
+                return {
+                    list: [1,3,2]
+                };
+            },
+            methods: {
+                addData(data){
+                    this.list.push(data);
+                }
+            }
+        });
+        
+        Vue.component('my-child', {
+            template: `
+            <div>
+                <input text="text" v-model="newUser">
+                <button @click="addUser">添加</button>
+            </div>
+            `,
+            props: ['userName'],
+            data(){
+                return {
+                    newUser: ''
+                };
+            },
+            methods: {
+                addUser(){
+                    this.$emit('dataEvent', this.userName + ': ' + this.newUser);
+                }
+            }   
+        });
+        
+        new Vue({
+            el: '#app'
+        });
+
+    </script>
+</body>
+</html>

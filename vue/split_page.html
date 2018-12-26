@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue split-page</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style>    
+        .active{
+            color: red;
+        }
+        ul{
+            list-style-type: none;
+        }
+        li{
+            display: inline-block;
+            padding: 3px 6px ;
+            margin-right: 8px;
+            border: 1px solid #888;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>vue split-page</h2>
+    <div id="app">
+        hello
+        <ul>
+            <li @click="goPrev" :disabled="currentPage==1">&lt;&lt;</li>
+            <li v-for="page in pageCount" :class="{active: page==currentPage}" @click="goPage(page)">{{page}}</li>
+            <li @click="goNext" :disabled="currentPage==pageCount">&gt;&gt;</li>
+        </ul>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+
+    <script>
+        let myData = {
+           pageCount: 10,
+           currentPage: 4
+        };
+
+        new Vue({
+            el: '#app',
+            data: myData,
+            methods: {
+                goPage(page){
+                    this.currentPage = page;
+                },
+                goNext(){
+                    if(this.currentPage < this.pageCount){
+                        this.currentPage += 1;
+                    }
+                },
+                goPrev(){
+                    if(this.currentPage > 1){
+                        this.currentPage -= 1;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

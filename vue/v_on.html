@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue v-on</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style>    
+    </style>
+</head>
+<body>
+    <h2>vue v-on</h2>
+    <div id="app">
+        <input type="text" v-model="message"><br>
+        <button @click="say">say</button><br>
+        <button @click="run('vue')">修改message</button><br>
+
+        <hr>
+        <input type="button" @click="say" value="弹出"><br>
+        <input type="button" @click.stop="say" value="弹出"><br>
+        <input type="text" @keydown.enter="say"><br>
+
+        <hr>
+        <form action="#" @submit.prevent="handleSubmit">
+            <input type="text" name="username"><br>
+            <select @change="handleChange" name="hobby" id="hobby">
+                <option value="" disabled selected>--请选择--</option>
+                <option value="1">basketball</option>
+                <option value="2">football</option>
+                <option value="3">baseball</option>
+            </select>
+
+            <button type="submit">login</button>
+        </form>
+
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+
+    <script>
+        let myData = {
+            message: 'hello'
+        };
+
+        new Vue({
+            el: '#app',
+            data: myData,
+            methods: {
+                say(){
+                    alert(this.message);
+                },
+                run(msg){
+                    this.message = msg;
+                },
+                handleSubmit(){
+                    alert('表单提交');
+                },
+                handleChange(e){
+                    alert('new value: ' + e.target.value)
+                }
+            }
+        });
+    </script>
+</body>
+</html>

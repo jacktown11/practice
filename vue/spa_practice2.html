@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue spa practice2</title>
+    <link rel="stylesheet" href="./css/base.css">
+</head>
+<body>
+    <h2>Vue spa practice2</h2>
+    <div id="app">
+        <router-view></router-view>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+    <script src="./lib/vue-router.js"></script>
+
+    <script>
+        let MyLogin = Vue.component('MyLogin', {
+            template: `
+            <div>
+                <h3>这是登录页</h3>
+                <router-link to="/register">切换到注册</router-link>
+                </div>
+                `
+            });
+        let MyRegister = Vue.component('MyRegister', {
+            template: `
+            <div>
+                <h3>这是注册页</h3>
+                <button @click="toLogin">去登录</button>
+            `,
+            methods: {
+                toLogin(){
+                    this.$router.push('./login');
+                }
+            }
+        });
+
+        const routesConfig = [
+            {path: '', component: MyLogin},
+            {path: '/login', component: MyLogin},
+            {path: '/register', component: MyRegister}
+        ];
+        let router = new VueRouter({
+            routes: routesConfig
+        });
+        new Vue({
+            el: '#app',
+            router
+        });
+
+    </script>
+</body>
+</html>

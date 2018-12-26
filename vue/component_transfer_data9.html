@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 组件练习9</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+        div{
+            border: 1px solid #aaa;
+            width: 90%;
+            margin: 20px auto;
+            padding: 2px;
+        }
+    </style>
+</head>
+<body>
+    <h2>vue 组件练习9</h2>
+    <div id="app">
+        <sender></sender>
+        <receiver></receiver>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+
+    <script>
+        let bus = new Vue();
+
+        Vue.component('sender', {
+            template: `
+            <div style="border: 1px solid #888;">
+                <h3>sender</h3>
+                <input @keyup.enter="sendMsg" type="text" v-model="msg">
+                <button @click="sendMsg">发送</button>
+            </div>
+            `,
+            data(){
+                return {
+                    msg: ''
+                }
+            },
+            methods: {
+                sendMsg(){
+                    bus.$emit('myDataEvent', this.msg);
+                }
+            }
+        });
+
+        Vue.component('receiver', {
+            template: `
+            <div style="border: 1px solid #888;">
+                <h3>receiver</h3>
+                <p>{{info}}</p>
+            </div>
+            `,
+            data(){
+                return {
+                    info: ''
+                };
+            },
+            mounted(){
+                bus.$on('myDataEvent', msg=>{
+                    this.info = 'message received: ' + msg;
+                });
+            }
+        });
+
+
+        new Vue({
+            el: '#app'
+        });
+
+    </script>
+</body>
+</html>

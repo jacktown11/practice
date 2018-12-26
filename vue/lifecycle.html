@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 复合组件练习</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+    </style>
+</head>
+<body>
+    <h2>vue 复合组件练习</h2>
+    <div id="app">
+        <button @click="isRender=!isRender">切换显示</button>
+        <my-component v-if="isRender"></my-component>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+
+    <script>
+        Vue.component('my-component', {
+            template: `
+                <div style="border: 1px solid #000;">
+                    <button @click="handleClick">Clike me</button>
+                    <p>hello {{count}}</p>
+                </div>
+            `,
+            data: function(){
+                // 使用函数的原因，每次复用组件时的数据独立
+                return {
+                    count: 0
+                };
+            },
+            methods: {
+                handleClick(){
+                    this.count++;
+                }
+            },
+            beforeCreate(){
+                console.log('beforeCreated');
+            },
+            created(){
+                console.log('created');
+            },
+            beforeMount(){
+                console.log('before mount');
+            },
+            mounted(){
+                console.log('mounted');
+            },
+            beforeUpdate(){
+                console.log('before update');
+            },
+            updated(){
+                console.log('updated');
+            },
+            beforeDestroy(){
+                console.log('before destroy');
+            },
+            destroyed(){
+                console.log('destroyed');
+            }
+        });
+        new Vue({
+            el: '#app',
+            data: {
+                isRender: true
+            }
+        })
+    </script>
+</body>
+</html>

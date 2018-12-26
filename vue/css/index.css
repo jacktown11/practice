@@ -1,0 +1,30 @@
+body{
+    width: 600px;
+    margin: auto;
+}
+ul,li{
+    margin: 0;
+    padding: 0;
+}
+ul{
+    list-style-type: none;
+    border-left: 4px solid #c0c0c0;
+}
+ul::after{
+    content: '';
+    height: 0px;
+    display: block;
+    clear: both;
+}
+li{
+    float: left;
+    margin: 5px;
+    line-height: 45px;
+}
+ul a{
+    display: inline-block;
+    height: 100%;
+    padding: 4px 8px;
+    background-color: #ccc;
+}
+

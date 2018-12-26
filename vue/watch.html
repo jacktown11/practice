@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 监听属性</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+    </style>
+</head>
+<body>
+    <h2>vue 监听属性</h2>
+    <div id="app">
+        <my-component></my-component>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+
+    <script>
+        Vue.component('my-component', {
+            template: `
+                <div>
+                    地址：<input type="text" v-model="myAddress"><br>
+                    电话：<input type="text" v-model="myPhone"><br>
+                    <p>{{myAddress}}</p>
+                    <p>{{myPhone}}</p>
+                </div>
+            `,
+            data(){
+                return {
+                    myAddress: '',
+                    myPhone: ''
+                };
+            },
+            watch: {
+                myAddress(newVal, oldVal){
+                    console.log(`地址变了,${oldVal}=>${newVal}`)
+                },
+                myPhone(newVal, oldVal){
+                    console.log(`电话变了,${oldVal}=>${newVal}`)
+                }
+            }
+        });
+        new Vue({
+            el: '#app',
+            data: {
+
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue demo</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+</head>
+<body>
+    <h2>vue demo1</h2>
+    <div id="app">
+        <!-- 这里是View -->
+        {{msg}}
+    </div>
+    <script>
+        // 创建model(数据)
+        let myData = {
+            msg: 'hello vue'
+        };
+
+        // 创建Vue实例（ViewModel）
+        new Vue({
+            el: '#app', // 挂载点，vue对象挂载的元素
+            data: myData // 数据
+        });
+    </script>
+</body>
+</html>

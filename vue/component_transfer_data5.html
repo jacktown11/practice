@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 子传父组件练习1</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+    </style>
+</head>
+<body>
+    <h2>vue 子传父组件练习1</h2>
+    <div id="app">
+        <parent></parent>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+
+    <script>
+        Vue.component('parent', {
+            template: `
+            <ul v-show="isUserLogin">
+                <li @dataEvent="handleData" is="child" v-for="item in list" :itemVal="item"></li>
+            </ul>
+            `,
+            data(){
+                return {
+                    isUserLogin: true,
+                    list: [
+                        'tom',
+                        'jack',
+                        'Frank',
+                        'Jerry'
+                    ]
+                };
+            },
+            methods: {
+                handleData: function(isUserLogin){
+                    this.isUserLogin = isUserLogin;
+                }
+            }
+        });
+        
+        Vue.component('child', {
+            template: `
+            <li>{{itemVal}} <button @click="hide">隐藏</button></li>
+            `,
+            props: ['itemVal'],
+            methods: {
+                hide(){
+                    this.$emit('dataEvent', false)
+                }
+            }
+        });
+        
+        new Vue({
+            el: '#app'
+        });
+
+    </script>
+</body>
+</html>

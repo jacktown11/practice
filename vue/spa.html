@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue SPA</title>
+    <link rel="stylesheet" href="./css/base.css">
+</head>
+<body>
+    <h2>vue SPA</h2>
+    <div id="app">
+        <router-view></router-view>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+    <script src="./lib/vue-router.js"></script>
+
+    <script>
+        let login = Vue.component('login',{
+            template: `
+                <h3>登录</h3>
+                
+            `
+        });
+        let register = Vue.component('register', {
+            template: `
+                <h3>注册</h3>
+            `
+        });
+
+        let routerConfig = [
+            {path: '', component: login},
+            {path: '/login', component: login},
+            {path: '/register', component: register}
+        ];
+        let router = new VueRouter({
+            routes: routerConfig
+        });
+
+        new Vue({
+            el: '#app',
+            router
+        });
+
+    </script>
+</body>
+</html>

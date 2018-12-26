@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue v-show</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+</head>
+<body>
+    <h2>vue v-if</h2>
+    <div id="app">
+        {{message}}
+        <p v-if="yes">yes</p>
+        <p v-if="no">no</p>
+        <p v-if="age>28">age: {{age}}</p>
+        <p v-if="name.indexOf('o') >= 0">name: {{name}}</p>
+    </div>
+    <script>
+        let myData = {
+            message: 'hello vue',
+            yes: true,
+            no: false,
+            name: 'tom',
+            age: 28
+        };
+
+        new Vue({
+            el: '#app',
+            data: myData
+        });
+    </script>
+</body>
+</html>

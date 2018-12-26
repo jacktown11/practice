@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue v-for</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style>
+        table{
+            width: 800px;
+            margin: auto;
+            border: 1px solid #222;
+        }
+    </style>
+</head>
+<body>
+    <h2>vue v-for</h2>
+    <div id="app">
+        <table>
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(user, index) in users">
+                    <td>{{user.uid}}</td>
+                    <td>{{user.uname}}</td>
+                    <td>{{user.age}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <button @click="addUser">添加</button>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+
+    <script>
+        let myData = {
+            users: [
+                {uid: 1, uname: 'tom', age: 28},
+                {uid: 2, uname: 'jerry', age: 29},
+                {uid: 3, uname: 'jack', age: 31}
+            ]
+        };
+
+        new Vue({
+            el: '#app',
+            data: myData,
+            methods: {
+                addUser(){
+                    // 更新
+                    this.users.push({
+                        uid: this.users.length+1,
+                        uname: 'hello',
+                        age: 30
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

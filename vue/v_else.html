@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue v-else</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+</head>
+<body>
+    <h2>vue v-else</h2>
+    <div id="app">
+        <p v-if="age>=25">{{name}},你是年轻人</p>        
+        <p v-else>{{name}},你老了</p>        
+
+    </div>
+    <script>
+        let myData = {
+            message: 'hello vue',
+            yes: true,
+            no: false,
+            name: 'jack',
+            age: 28,
+            gender: 'male'
+        };
+
+        new Vue({
+            el: '#app',
+            data: myData
+        });
+    </script>
+</body>
+</html>

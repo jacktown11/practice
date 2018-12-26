@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue custom directive2</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+    </style>
+</head>
+<body>
+    <h2>vue custom directive2</h2>
+    <div id="app">
+        <button @click="rc">Random Background Color</button><br>
+        <p v-change-background-color="bgColor">hello</p>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+
+    <script>
+        let myData = {
+            bgColor: '#088'
+        };
+
+        new Vue({
+            el: '#app',
+            data: myData,
+            methods: {
+                rc(){
+                    let r = Math.floor(Math.random()*256),
+                        g = Math.floor(Math.random()*256),
+                        b = Math.floor(Math.random()*256);
+                    this.bgColor = `rgb(${r}, ${g}, ${b})`;
+                }
+            },
+            directives: {
+                changeBackgroundColor: {
+                    bind(el, bindings){
+                        el.style.backgroundColor = bindings.value;
+                    },
+                    update(el, bindings){
+                        el.style.backgroundColor = bindings.value;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

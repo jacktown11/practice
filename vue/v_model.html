@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue v-model</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+    </style>
+</head>
+<body>
+    <h2>vue v-model</h2>
+    <div id="app">
+        <input type="text" v-model="myVal"><br>
+        <input type="text" v-model.lazy="myVal"><br>
+        {{myVal}} <br>
+
+        <input type="text" v-model="myVal2"><br>
+        number:<input type="text" v-model.num="myVal2"><br>
+        trim:<input type="text" v-model.trim="myVal2"><br>
+        {{myVal2}} <br>
+    </div>
+    
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+
+    <script>
+        let myData = {
+            myVal: '',
+            myVal2: ''
+        };
+
+        new Vue({
+            el: '#app',
+            data: myData,
+            methods: {
+                
+            }
+        });
+    </script>
+</body>
+</html>

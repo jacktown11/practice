@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue spa practice1</title>
+    <link rel="stylesheet" href="./css/base.css">
+</head>
+<body>
+    <h2>Vue spa practice1</h2>
+    <div id="app">
+        <router-view></router-view>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+    <script src="./lib/vue-router.js"></script>
+
+    <script>
+        let MyCollect = Vue.component('MyCollect', {
+            template: `
+                <h3>这是收藏页</h3>
+            `
+        });
+        let MyDetail = Vue.component('MyDetail', {
+            template: `
+                <h3>这是详情页</h3>
+            `
+        });
+        let MyOrder = Vue.component('MyOrder', {
+            template: `
+                <h3>这是订单页</h3>
+            `
+        });
+
+        const routesConfig = [
+            {path: '', component: MyCollect},
+            {path: '/collect', component: MyCollect},
+            {path: '/detail', component: MyDetail},
+            {path: '/order', component: MyOrder}
+        ];
+        let router = new VueRouter({
+            routes: routesConfig
+        });
+        new Vue({
+            el: '#app',
+            router
+        });
+
+    </script>
+</body>
+</html>

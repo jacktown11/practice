@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue todo list</title>
+    <link rel="stylesheet" href="./css/base.css">
+</head>
+<body>
+    <h2>Vue todo list</h2>
+    <div id="app">
+        <todo-list></todo-list>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+    <script src="./lib/vue-resource.min.js"></script>
+
+    <script>
+        Vue.component('AddItem', {
+            template: `
+            <div>
+                <input type="text" v-model="todo" @keyup.enter="addItem">
+                <button @click="addItem">添加</button>
+            </div>
+            `,
+            data(){
+                return {
+                    todo: ''
+                };
+            },
+            methods: {
+                addItem(){
+                    this.$emit('add', this.todo);
+                    this.todo = '';
+                }
+            }
+        });
+        Vue.component('TodoItem', {
+            template: `
+                <li>
+                    {{todo}} <button @click="deleteTodo">删除</button>
+                </li>
+            `,
+            props: ['todo'],
+            methods: {
+                deleteTodo(){
+                    this.$emit('deleteItem')
+                }
+            }
+        });
+        Vue.component('TodoList', {
+            template: `
+            <div>
+                <h3>Todo List</h3>
+                <add-item @add="add"></add-item>
+                <ul>
+                    <li 
+                        is="todo-item" 
+                        v-for="(item,index) in todos" 
+                        :todo="item" 
+                        @deleteItem="deleteItem(index)"></li>
+                </ul>
+            </div>
+            `,
+            data(){
+                return {
+                    todos: []
+                };
+            },
+            methods: {
+                deleteItem(index){
+                    this.todos.splice(index, 1);
+                },
+                add(item){
+                    this.todos.push(item);
+                }
+            },
+            created(){
+                this.$http.get('./data/todo.json').then(
+                    data=>{
+                        this.todos = data.data;
+                    },
+                    err=>{
+                        console.log(err);
+                    }
+                );
+            }
+        });
+        new Vue({
+            el: '#app'
+        });
+    </script>
+</body>
+</html>

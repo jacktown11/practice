@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 复合组件练习</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+    </style>
+</head>
+<body>
+    <h2>vue 复合组件练习</h2>
+    <div id="app">
+        <my-form></my-form>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+
+    <script>
+        Vue.component('label-name', {
+            template: `<label>用户名：</label>`
+        });
+        Vue.component('input-name', {
+            template: `<input type="text">`
+        });
+        Vue.component('label-pwd', {
+            template: `<label>密码：</label>`
+        });
+        Vue.component('input-pwd', {
+            template: `<input type="password">`
+        });
+        Vue.component('button-login', {
+            template: `<button type="submit">登录</button>`
+        });
+        Vue.component('button-register', {
+            template: `<button type="submit">注册</button>`
+        });
+        Vue.component('my-form', {
+            template: `
+            <form action="#">
+                <label-name></label-name>
+                <input-name name="name"></input-name><br>
+                <label-pwd></label-pwd>
+                <input-pwd></input-pwd><br>
+                <button-login></button-login>
+            </form>
+            `
+        });
+
+
+        let myData = {
+
+        };
+
+        new Vue({
+            el: '#app',
+            data: myData
+        });
+    </script>
+</body>
+</html>

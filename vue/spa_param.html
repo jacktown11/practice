@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue spa 传参</title>
+    <link rel="stylesheet" href="./css/base.css">
+</head>
+<body>
+    <h2>Vue spa 传参</h2>
+    <div id="app">
+        <router-view></router-view>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+    <script src="./lib/vue-router.js"></script>
+
+    <script>
+        let MyMain = Vue.component('my-main', {
+            template: `
+            <div>
+                欢迎您，<p>{{uname}}</p>
+                <router-link to="/login">去登录页</router-link>
+            </div>
+            `,
+            data(){
+                return {
+                    uname: ''
+                };
+            },
+            mounted(){
+                this.uname = this.$route.params.uname;
+            }
+        });
+        let MyLogin = Vue.component('my-login', {
+            template: `
+            <div>
+                <input type="text" v-model="uname" @keyup.enter="login">
+                <button @click="login">登录</button>
+                <router-link :to="'/main/'+uname">登录</router-link>
+            </div>
+            `,
+            data(){
+                return {
+                    uname: ''
+                };
+            },
+            methods: {
+                login(){
+                    this.$router.push('/main/'+this.uname);
+                }
+            }
+        });
+        let MyNotFound = Vue.component('my-not-found', {
+            template: `
+            <div>
+                <p>Not Found!</p>
+                <router-link to="/login">登录</router-link>
+            </div>
+            `
+        });
+        let routesConfig = [
+            {path: '', component: MyLogin},
+            {path: '/login', component: MyLogin},
+            {path: '/main/:uname', component: MyMain},
+            {path: '*', component: MyNotFound} //之前的页面都不匹配
+        ];
+        let router = new VueRouter({
+            routes: routesConfig
+        });
+        new Vue({
+            el: '#app',
+            router
+        });
+    </script>
+</body>
+</html>

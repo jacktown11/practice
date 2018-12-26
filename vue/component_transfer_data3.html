@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 父传子组件练习2</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+    </style>
+</head>
+<body>
+    <h2>vue 父传子组件练习2</h2>
+    <div id="app">
+        <parent></parent>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+
+    <script>
+        Vue.component('parent', {
+            template: `
+            <div>
+                <child car="myCar"></child>
+            </div>
+            `,
+            data(){
+                return {
+                    myCar: 'QQ'
+                };
+            }
+        });
+        Vue.component('child', {
+            template: `
+                <input type="text" :value="car">
+            `,
+            props: ['car']
+        });
+        
+        new Vue({
+            el: '#app'
+        });
+
+    </script>
+</body>
+</html>

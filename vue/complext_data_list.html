@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue data list</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+        table{
+            width: 500px;
+            margin: 30px auto;
+            border-collapse: collapse;
+            border: 1px solid #080;
+        } 
+        td,th{
+            border-bottom: 1px solid #080;
+        }
+    </style>
+</head>
+<body>
+    <h2>vue data list</h2>
+    <div id="app">
+        <form action="#" @submit.prevent="addUser">
+            用户名：<input type="text" name="name" v-model="newUser.name"><br>
+            年龄：<input type="text" name="age" v-model.number="newUser.age"><br>
+            电话：<input type="text" name="telephone" v-model="newUser.telephone"><br><br>
+            <p>{{errorInfo}}</p>
+            <button type="submit">添加用户</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>用户编号</th>
+                    <th>用户名</th>
+                    <th>年龄</th>
+                    <th>电话</th>
+                    <th>删除</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr v-for="(user,index) in userList" key="user.id">
+                    <td>{{user.id}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.age}}</td>
+                    <td>{{user.telephone}}</td>
+                    <td><button @click="deleteUser(index)" style="color: red;">X</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+
+    <script>
+        let myData = {
+            newUser: {
+                id: undefined,
+                name: '',
+                age: '',
+                telephone: ''
+            },
+            errorInfo: '',
+            userList: [{
+                id: 1,
+                name: 'Tom',
+                age: 23,
+                telephone: '13487562933'
+            }],
+            nextId: 2
+        };
+
+        new Vue({
+            el: '#app',
+            data: myData,
+            methods: {
+                validate(){
+                    let newUser = this.newUser;
+                    console.log(newUser);
+                    return newUser.name.trim() != '' && 
+                        newUser.age >= 0 && 
+                        /^\d{11}$/.test(newUser.telephone);
+                },
+                addUser(){
+                    if(this.validate()){
+                        this.errorInfo = '';
+                        // 添加id并更新
+                        this.newUser.id = this.nextId;
+                        this.nextId++;
+                        
+                        // 添加到用户列表中
+                        this.userList.push(this.newUser);
+                        // 清空用户输入表单
+                        this.newUser = {
+                            id: undefined,
+                            name: '',
+                            age: '',
+                            telephone: ''
+                        };
+                    }else{
+                        this.errorInfo = '字段存在不合规范的地方，请检查';
+                    }
+                },
+                deleteUser(index){
+                    this.userList.splice(index, 1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

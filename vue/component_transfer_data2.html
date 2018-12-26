@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 父传子组件练习</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+    </style>
+</head>
+<body>
+    <h2>vue 父传子组件练习</h2>
+    <div id="app">
+        <my-login></my-login>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+
+    <script>
+        Vue.component('my-login', {
+            template: `
+            <form action="#" @submit.prevent>
+                <my-input itemName="用户名" holderVal="输入用户名"></my-input>
+                <my-input itemName="密码" holderVal="输入密码"></my-input>
+                <button type="submit">提交</button>
+            </form>
+            `,
+            data(){
+                return {
+                };
+            }
+        });
+
+        Vue.component('my-input', {
+            template: `
+            <div>
+                {{itemName}}：<input type="text" :placeholder="holderVal">
+            </div>
+            `,
+            props: ['itemName','holderVal']
+        }); 
+        
+        new Vue({
+            el: '#app'
+        });
+
+    </script>
+</body>
+</html>

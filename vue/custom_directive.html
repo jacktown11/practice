@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue custom directive</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+    </style>
+</head>
+<body>
+    <h2>vue custom directive</h2>
+    <div id="app">
+        <p v-d1="count">hello</p>
+    </div>
+    
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+
+    <script>
+        let myData = {
+            count: 1
+        };
+
+        new Vue({
+            el: '#app',
+            data: myData,
+            method:{},
+            directives: {
+                d1: {
+                    bind(el, bindings){
+                        console.log('指令已被绑定到元素');
+                        console.log(el);
+                        console.log(bindings);
+                    },
+                    update(el, bindings){
+                        console.log('指令中的数据发生了变化');
+                    },
+                    unbind(el, bindings){
+                        console.log('解除了绑定');
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

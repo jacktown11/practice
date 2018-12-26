@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 复合组件</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <style> 
+    </style>
+</head>
+<body>
+    <h2>vue 复合组件</h2>
+    <div id="app">
+        <my-article></my-article>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.min.js"></script>
+
+    <script>
+        Vue.component('my-title', {
+            template: `
+                <h3>文章标题</h3>
+            `
+        });
+        Vue.component('my-detail', {
+            template: `
+                <p>文章详情</p>
+            `
+        });
+        Vue.component('my-article', {
+            template: `
+                <div>
+                    <my-title></my-title>
+                    <my-detail></my-detail>
+                </div>
+            `
+        });
+
+        let myData = {
+
+        };
+
+        new Vue({
+            el: '#app',
+            data: myData
+        });
+    </script>
+</body>
+</html>

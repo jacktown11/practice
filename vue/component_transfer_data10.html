@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 组件练习10</title>
+    <link rel="stylesheet" href="./css/base.css">
+</head>
+<body>
+    <h2>vue 组件练习10</h2>
+    <div id="app">
+        <my-main></my-main>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+
+    <script>
+        Vue.component('my-main', {
+            template: `
+            <div>
+                <button :disabled="isDisabled" @click="addCount">递增</button>
+                <p>父组件：{{count}}</p>
+                <son @stopAdd="isDisabled=true;" :count="count"></son>
+            </div>
+            `,
+            data(){
+                return {
+                    count: 0,
+                    isDisabled: false
+                };
+            },
+            methods: {
+                addCount(){
+                    this.count++;
+                }
+            }
+        });
+
+        Vue.component('son', {
+            template: `
+                <p>子组件：{{count}}</p>
+            `,
+            props: ['count'],
+            watch: {
+                count(newVal){
+                    if(newVal >= 10){
+                        this.$emit('stopAdd');
+                    }
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app'
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue spa 传参练习</title>
+    <link rel="stylesheet" href="./css/base.css">
+</head>
+<body>
+    <h2>Vue spa 传参练习</h2>
+    <div id="app">
+        <router-view></router-view>
+    </div>
+
+    <script src="./js/back.js"></script>
+    <script src="./lib/vue.js"></script>
+    <script src="./lib/vue-router.js"></script>
+
+    <script>
+        let ProductList = Vue.component('ProductList', {
+            template: `
+                <ul>
+                    <li v-for="prod in products">{{prod.pid}} : {{prod.pname}} <router-link :to="'/productDetail/'+prod.pid+'/'+prod.pname">详情</router-link></li>
+                </ul>
+            `,
+            data(){
+                return {
+                    products: [
+                        {pid: 1, pname: 'TV'},
+                        {pid: 2, pname: 'desk'},
+                        {pid: 3, pname: 'light'}
+                    ]
+                };
+            }
+        });
+        let ProductDetail = Vue.component('ProductDetail', {
+            template: `
+            <div>
+                产品编号：{{pid}}<br>
+                产品名称：{{pname}}<br>
+                详细描述：xxxxxxx<br>
+                <button @click="toProductList">返回列表</button>
+            </div>
+            `,
+            data(){
+                return {
+                    pid: '',
+                    pname: ''
+                };
+            },
+            mounted(){
+                this.pid = this.$route.params.pid;
+                this.pname = this.$route.params.pname;
+            },
+            methods: {
+                toProductList(){
+                    this.$router.push('/productList');
+                }
+            }
+        });
+
+        let routesConfig = [
+            {path: '', component: ProductList},
+            {path: '/productList', component: ProductList, alias: '/pList'},
+            {path: '/myList', redirect: '/productList'},
+            {path: '/productDetail/:pid/:pname', component: ProductDetail},
+        ];
+        let router = new VueRouter({
+            routes: routesConfig
+        });
+        new Vue({
+            el: '#app',
+            router
+        });
+    </script>
+</body>
+</html>
