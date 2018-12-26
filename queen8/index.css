@@ -1,0 +1,13 @@
+table{
+    display: inline-block;
+    margin: 10px;
+    border-collapse: collapse;
+}
+td{
+    width: 20px;
+    height: 20px;
+    border: 1px solid #000;
+}
+.selected{
+    background-color: #088;
+}
