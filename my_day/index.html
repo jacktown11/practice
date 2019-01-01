@@ -1,86 +1,94 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>my-day</title>
     <style>
-        .fl{float: left;}
-        .fr{float: right;}
-        body{
-            width: 1260px;
+        .fl {
+            float: left;
+        }
+
+        .fr {
+            float: right;
+        }
+
+        body {
+            width: 98%;
             margin: auto;
             margin-top: 0px;
         }
-        .container{
+
+        .container {
             width: 100%;
             margin: 0px auto 40px auto;
             position: relative;
         }
-        
+
         /*顶部信息条*/
-        .info{
+        .info {
             position: fixed;
             background-color: #cff;
             top: 0px;
             left: 0;
             right: 0;
-            padding: 5px 25px 0px;
-            height: 75px;
+            padding-top: 5px;
             text-align: center;
             box-shadow: 0 0 2px #888;
         }
 
-        .info::after,
-        .container::after{
-            content: '';
-            display: block;
-            height: 0px;
-            clear: both;
-        }
         .title,
         .daysInfo,
-        .setting{
+        .setting {
             display: inline-block;
             vertical-align: top;
-            height: 66px;
         }
-        .title{
-            margin-right: 40px;
+
+        .title {
+            height: 40px;
+            margin: 12px 15px 0 15px;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
             color: #800080;
         }
-        .daysInfo{
+
+        .daysInfo {
             text-align: center;
         }
-        .daysInfo td{
-            padding: 5px 15px;
-            font-size: 130%;
+
+        .daysInfo td {
+            padding: 5px 5px;
             font-weight: bold;
         }
-        .total-num{
+
+        .total-num {
             font-size: 100%;
         }
-        .left-num{
+
+        .left-num {
             color: #f40;
         }
-        .gone-num{
+
+        .gone-num {
             color: #666;
         }
-        .average-score{
+
+        .average-score {
             color: #088;
         }
-        .current-score{
+
+        .current-score {
             min-width: 45px;
         }
-        
+
         /* 字体设置按钮 */
-        .setting{
+        .setting {
             height: 40px;
-            padding: 16px 0 0 60px;
+            padding: 16px 15px 0 15px;
         }
-        .setting button{
+
+        .setting button {
             width: 48px;
             height: 36px;
             color: #06c;
@@ -90,43 +98,53 @@
             cursor: pointer;
             outline: none;
         }
-        button.selected{
+
+        button.selected {
             background-color: #ccc;
         }
-        button:hover{
+
+        button:hover {
             border-color: #aaa;
         }
 
         /* 方格样式 */
-        .days{
-            padding-top: 84px;
+        .days {
+            margin-top: 70px;
+            border-top: 2px solid #222;
         }
-        .days .day{
+
+        .loading {
+            margin-top: 200px;
+            text-align: center;
+        }
+
+        .days .day {
             float: left;
             border: 1px solid #aaa;
             cursor: pointer;
             width: 3px;
             height: 3px;
         }
-        .middle .day{
+
+        .middle .day {
             width: 6px;
             height: 6px;
         }
-        .large .day{
+
+        .large .day {
             width: 12px;
             height: 12px;
-            border-color: #aaa !important; 
+            border-color: #aaa !important;
         }
-        .day:hover{
-            border-color: #000 !important; 
+
+        .day:hover {
+            border-color: #000 !important;
         }
-        
     </style>
 </head>
+
 <body>
-
     <div class="container middle">
-
         <div class="info">
             <h2 class="title">My 75 Years</h2>
             <table class="daysInfo">
@@ -154,31 +172,32 @@
             </div>
         </div>
         <div class="days">
+            <p class="loading">loading...</p>
             <!-- <span class="day" data-score="80" data-day="2018-10-23"></span> -->
         </div>
     </div>
 
     <script>
         // 信息显示
-        let daysInfo = {
+        var daysInfo = {
             node: document.querySelector('.daysInfo'),
             currentDate: document.querySelector('.daysInfo .current-date'),
             currentScore: document.querySelector('.daysInfo .current-score'),
-            refresh(date, score){
+            refresh: function (date, score) {
                 this.currentDate.innerHTML = date;
                 this.currentScore.innerHTML = score;
             }
         };
 
         // 大小控制
-        let setting = {
+        var setting = {
             node: document.querySelector('.setting'),
             buttons: [].slice.apply(document.querySelectorAll('.setting button')),
-            init(){
-                setting.node.onclick = function(e){
-                    let target = e.target;
-                    if(target.tagName.toLowerCase() === 'button'){
-                        setting.buttons.forEach(item=>{
+            init: function () {
+                setting.node.onclick = function (e) {
+                    var target = e.target;
+                    if (target.tagName.toLowerCase() === 'button') {
+                        setting.buttons.forEach(function (item) {
                             item.classList.remove('selected');
                             app.container.classList.remove(item.getAttribute('data-size'));
                         });
@@ -189,14 +208,13 @@
             }
         };
 
-
         // 该对象用于表示了某天的日期及其在文档中对应的节点
         function Day(year, month, day) {
             this.node = null;
             this.year = year;
             this.month = month; // start form 0
             this.day = day;
-            this.dateStr = year + '-' +('0'+(month + 1)).slice(-2) + '-' + ('0'+day).slice(-2);
+            this.dateStr = year + '-' + ('0' + (month + 1)).slice(-2) + '-' + ('0' + day).slice(-2);
             this.isPassed = new Date(this.year, this.month, this.day).getTime() + Day.MS_OF_ONE_DAY < Date.now();
             this.init(); //创建出该日期的文档节点（未插入文档）
         }
@@ -205,21 +223,21 @@
             constructor: Day,
             now: new Date(),
             today: (function () {
-                let d = new Date();
+                var d = new Date();
                 return new Date(d.getFullYear(), d.getMonth(), d.getDate());
             })(),
-            init() {
+            init: function () {
                 // 创建出该日期的文档节点（未插入文档）
-                let span = document.createElement('span');
+                var span = document.createElement('span');
                 span.setAttribute('data-day', this.dateStr);
-                let score = scoreData.getScoreByDate(this.year, this.month, this.day);
+                var score = scoreData.getScoreByDate(this.year, this.month, this.day);
                 if (!score) score = this.isPassed ? scoreData.defaultScore : 0;
                 span.setAttribute('data-score', score);
                 span.setAttribute('data-date', this.dateStr);
                 span.className = 'day';
                 if (this.isPassed) {
                     span.className += ' passed';
-                    let color = Color.getColorByScore(score);
+                    var color = Color.getColorByScore(score);
                     span.style.backgroundColor = color;
                     span.style.borderColor = color;
                 }
@@ -227,54 +245,57 @@
             },
 
         };
-        
-        let birthday = {
-            year: 1993,
-            month: 4, // start from 0
-            day: 24,
-            date: new Date(1993, 4, 24)
-        };
-        let scoreData = {
+
+        var birthday = (function () {
+            var date = new Date(1993, 4, 24);
+            return {
+                year: date.getFullYear(),
+                month: date.getMonth(), // start from 0
+                day: date.getDate(),
+                date: date
+            };
+        })();
+        var scoreData = {
             data: [],
             defaultScore: 85,
-            todayIndex: (function(){
-                let now = new Date();
-                let year = now.getFullYear(),
+            todayIndex: (function () {
+                var now = new Date();
+                var year = now.getFullYear(),
                     month = now.getMonth(),
                     day = now.getDate();
                 return (new Date(year, month, day).getTime() - birthday.date.getTime()) / Day.MS_OF_ONE_DAY;
             })(),
-            getIndexOfDay(year, month, day){
+            getIndexOfDay: function (year, month, day) {
                 return (new Date(year, month, day).getTime() - birthday.date.getTime()) / Day.MS_OF_ONE_DAY;
             },
-            getScoreByDate(year, month, day){
+            getScoreByDate: function (year, month, day) {
                 // 获取某日期的得分
                 return this.data[this.getIndexOfDay(year, month, day)];
             },
-            setScoreByDate(year, month, day, score){
+            setScoreByDate: function (year, month, day, score) {
                 // 存储某日期的得分
                 return this.data[this.getIndexOfDay(year, month, day)] = score;
             },
-            initScoreData(callback){
+            initScoreData: function (callback) {
                 //请求./data/score.json，遍历存储
-                let self = this;
+                var self = this;
 
                 // 设置以往没有分数记录的日期的默认分数
-                let defaultScore = this.defaultScore,
+                var defaultScore = this.defaultScore,
                     todayIndex = this.todayIndex,
                     data = this.data;
-                for(let i = 0; i < todayIndex; i++){
+                for (var i = 0; i < todayIndex; i++) {
                     data[i] = defaultScore;
                 }
 
                 // 获取到数据后的遍历存储函数
-                let loadData = function(data){
+                var loadData = function (data) {
                     data = JSON.parse(data);
-                    data.forEach((item) => {
-                        let startTime = item.startTime.split('-');
-                        let date = new Date(startTime[0], startTime[1]-1, startTime[2]);
-                        let scores = item.score;
-                        scores.forEach((score) => {
+                    data.forEach(function (item) {
+                        var startTime = item.startTime.split('-');
+                        var date = new Date(startTime[0], startTime[1] - 1, startTime[2]);
+                        var scores = item.score;
+                        scores.forEach(function (score) {
                             self.setScoreByDate(date.getFullYear(), date.getMonth(), date.getDate(), score);
                             date = new Date(date.getTime() + Day.MS_OF_ONE_DAY);
                         });
@@ -282,12 +303,12 @@
                 };
 
                 // ajax请求获取score.json
-                let xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function(){
-                    if(xhr.readyState === 4){
-                        if((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304){
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
                             loadData(xhr.responseText);
-                        }else{
+                        } else {
                             console.log('fail to load score.json');
                         }
                         callback && callback();
@@ -296,31 +317,31 @@
                 xhr.open('get', './data/score.json', true);
                 xhr.send(null);
             },
-            getAverage(){
-                let scoreSum = 0,
+            getAverage: function () {
+                var scoreSum = 0,
                     data = this.data,
                     todayIndex = this.todayIndex;
-                for(let i = 0; i < todayIndex; i++){
+                for (var i = 0; i < todayIndex; i++) {
                     scoreSum += data[i];
                 }
-                return scoreSum/todayIndex;
+                return scoreSum / todayIndex;
             }
         };
-        let Color = {
-            getColorByScore(score) {
+        var Color = {
+            getColorByScore: function (score) {
                 // 获取某得分对应的背景色，通过对rgb值查表线性插入
-                let table = {
+                var table = {
                     score: [-20, 0, 100],
                     red: [255, 255, 0],
                     green: [0, 255, 136],
                     blue: [0, 0, 0]
                 };
-                let len = table.score.length,
+                var len = table.score.length,
                     min = table.score[0], //最低分
                     max = table.score[table.score.length - 1]; //最低分
                 score = score < min ? min : (score > max ? max : score);
-                let minIndex = 0, maxIndex = 1;
-                for (let i = 0; i < len; i++) {
+                var minIndex = 0, maxIndex = 1;
+                for (var i = 0; i < len; i++) {
                     if (score > table.score[i]) {
                         minIndex = i;
                     } else {
@@ -328,61 +349,69 @@
                     }
                 }
                 maxIndex = Math.min(minIndex + 1, len - 1);
-                let red = table.red[minIndex] + (table.red[maxIndex] - table.red[minIndex]) / (table.score[maxIndex] - table.score[minIndex]) * (score - table.score[minIndex]);
-                let green = table.green[minIndex] + (table.green[maxIndex] - table.green[minIndex]) / (table.score[maxIndex] - table.score[minIndex]) * (score - table.score[minIndex]);
-                let blue = table.blue[minIndex] + (table.blue[maxIndex] - table.blue[minIndex]) / (table.score[maxIndex] - table.score[minIndex]) * (score - table.score[minIndex]);
+                var red = table.red[minIndex] + (table.red[maxIndex] - table.red[minIndex]) / (table.score[maxIndex] - table.score[minIndex]) * (score - table.score[minIndex]);
+                var green = table.green[minIndex] + (table.green[maxIndex] - table.green[minIndex]) / (table.score[maxIndex] - table.score[minIndex]) * (score - table.score[minIndex]);
+                var blue = table.blue[minIndex] + (table.blue[maxIndex] - table.blue[minIndex]) / (table.score[maxIndex] - table.score[minIndex]) * (score - table.score[minIndex]);
                 return 'rgb(' + red.toFixed(0) + ',' + green.toFixed(0) + ',' + blue.toFixed(0) + ')';
             }
         };
-        
-        let app = {
+
+        var app = {
             container: document.getElementsByClassName('container')[0],
+            info: document.getElementsByClassName('info')[0],
             days: document.getElementsByClassName('days')[0],
             YEAR_TO_LIVE: 75,
-            DAYS_TO_LIVE: (new Date(birthday.year+75, birthday.month, birthday.day).getTime() - birthday.date.getTime())/Day.MS_OF_ONE_DAY + 1,
-            start(){
+            DAYS_TO_LIVE: (new Date(birthday.year + 75, birthday.month, birthday.day).getTime() - birthday.date.getTime()) / Day.MS_OF_ONE_DAY + 1,
+            start: function () {
                 // 启动页面
                 // 请求score.json，并渲染
                 setting.init();
                 scoreData.initScoreData(this.initRender.bind(this));
                 this.setHandler();
             },
-            initRender(){
+            initRender: function () {
                 // 在已经得到个日期得分数据的情况下，渲染整个页面
-                this.showDaysInfo();
-                let frag = document.createDocumentFragment();
-                let currentDate = birthday.date;
-                for(let i = 0; i < this.DAYS_TO_LIVE; i++){
-                    let span = new Day(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()).node;
+                this.initDaysInfo();
+                var frag = document.createDocumentFragment();
+                var currentDate = birthday.date;
+                for (var i = 0; i < this.DAYS_TO_LIVE; i++) {
+                    var span = new Day(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()).node;
                     frag.appendChild(span);
                     currentDate = new Date(currentDate.getTime() + Day.MS_OF_ONE_DAY);
                 }
+                this.days.innerHTML = '';
                 this.days.appendChild(frag);
+
+                // 调整方格的margin-top
+                this.days.style.marginTop = (this.info.getBoundingClientRect().height + 5) + 'px';
             },
-            showDaysInfo(){
-                let daysInfo = document.getElementById('daysInfo');
-                let tds = daysInfo.getElementsByTagName('td');
-                let goneDays = ((Date.now() - birthday.date.getTime()) / Day.MS_OF_ONE_DAY).toFixed(0);
+            initDaysInfo: function () {
+                var daysInfo = document.getElementById('daysInfo');
+                var tds = daysInfo.getElementsByTagName('td');
+                var goneDays = ((Date.now() - birthday.date.getTime()) / Day.MS_OF_ONE_DAY).toFixed(0);
+                var now = new Date(),
+                    today = [now.getFullYear(), now.getMonth() + 1, now.getDate()];
                 tds[0].innerHTML = this.DAYS_TO_LIVE;
                 tds[1].innerHTML = goneDays;
                 tds[2].innerHTML = this.DAYS_TO_LIVE - goneDays;
                 tds[3].innerHTML = scoreData.getAverage().toFixed(2);
-                tds[4].innerHTML = '0000-00-00';
-                tds[5].innerHTML = '00';
+                tds[4].innerHTML = today.join('-');
+                tds[5].innerHTML = '--'
             },
-            setHandler(){
+            setHandler: function () {
                 // 鼠标移入方格时，显示当前方格的日期和分数
-                this.days.onmouseover = function(e){
-                    let target = e.target;
-                    if(target.tagName.toLowerCase() === 'span'){
+                this.days.onmouseover = function (e) {
+                    var target = e.target;
+                    if (target.tagName.toLowerCase() === 'span') {
                         daysInfo.refresh(target.getAttribute('data-date'), target.getAttribute('data-score'));
                     }
                 };
             }
         };
         app.start();
-        
+
     </script>
 
 </body>
+
 </html>
