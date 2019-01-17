@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Canvas</title>
     <style>
-        body{
+        body {
             text-align: center;
             margin-bottom: 100px;
         }
-        canvas{
+
+        canvas {
             background-color: #ccc;
         }
     </style>
 </head>
+
 <body>
     <h1>Canvas绘图</h1>
 
@@ -25,7 +28,7 @@
 
     <script>
         let ctx1 = document.getElementById('c1').getContext('2d');
-                
+
         // 绘制一个矩形
         ctx1.lineWidth = 1; // 描边宽度（空心）
         ctx1.strokeStyle = '#f00'; // 描边样式（空心）
@@ -33,15 +36,15 @@
         ctx1.strokeRect(0, 0, 100, 50); // 描边一个矩形(x,y,w,h)
         ctx1.fillRect(100, 0, 100, 50); // 填充一个矩形
         ctx1.clearRect(50, 0, 100, 100); //清除一个矩形范围内的所有绘图
-        
+
         // 在各角落与中心位置绘制多个矩形
         let ctx2 = document.getElementById('c2').getContext('2d');
         ctx2.fillStyle = '#0f8';
-        ctx2.fillRect(0,0, 100,80);
-        ctx2.fillRect(300,0, 100,80);
-        ctx2.fillRect(0,220, 100,80);
-        ctx2.fillRect(300,220, 100,80);
-        ctx2.fillRect(150,110, 100,80);
+        ctx2.fillRect(0, 0, 100, 80);
+        ctx2.fillRect(300, 0, 100, 80);
+        ctx2.fillRect(0, 220, 100, 80);
+        ctx2.fillRect(300, 220, 100, 80);
+        ctx2.fillRect(150, 110, 100, 80);
 
         // 水平垂直往复运动
         let ctx3 = document.getElementById('c3').getContext('2d');
@@ -54,17 +57,17 @@
             y = 0,
             width = 100,
             height = 50;
-        setInterval(function(){
+        setInterval(function () {
             // 水平分量
             let xInc = xDirection * pxGap;
-            if(x+xInc+width > 600 || x+xInc < 0){
+            if (x + xInc + width > 600 || x + xInc < 0) {
                 // 到头反转
                 xDirection = -xDirection;
                 xInc = -xInc;
             }
             // 垂直分量
             let yInc = yDirection * pxGap;
-            if(y+yInc+height > 250 || y+yInc < 0){
+            if (y + yInc + height > 250 || y + yInc < 0) {
                 // 到头反转
                 yDirection = -yDirection;
                 yInc = -yInc;
@@ -82,7 +85,7 @@
     <canvas id="c4" width="600" height="300">您的游览器版本太低，请升级！</canvas><br>
     <canvas id="c5" width="600" height="300">您的游览器版本太低，请升级！</canvas><br>
     <canvas id="c6" width="600" height="300">您的游览器版本太低，请升级！</canvas><br>
-    
+
     <script>
         // 绘制文本
         let ctx4 = document.getElementById('c4').getContext('2d');
@@ -95,10 +98,10 @@
         ctx4.fillText('hello, tom', 0, 20); // 在(x,y)坐标位置填充一段文本
 
         ctx4.textBaseline = 'top';
-        ctx4.strokeText('China',0, 100); // 在(x,y)位置描边一段文本
+        ctx4.strokeText('China', 0, 100); // 在(x,y)位置描边一段文本
         let info = ctx4.measureText('good morning'); // 测量文本宽度，返回对象｛width: x｝
         console.log(info.width);
-        
+
         // 在各角落和画布中央绘制文本
         let ctx5 = document.getElementById('c5').getContext('2d');
         let str = 'Hello, Canvas';
@@ -108,14 +111,14 @@
         let w = ctx5.measureText(str).width;
         ctx5.textBaseline = 'top';
         ctx5.fillText(str, 0, 0);
-        ctx5.fillText(str, 600-w, 0);
+        ctx5.fillText(str, 600 - w, 0);
         ctx5.textBaseline = 'bottom';
         ctx5.fillText(str, 0, 300);
-        ctx5.fillText(str, 600-w, 300);
-        ctx5.fillText(str, (600-w)/2, (300+24)/2);
-        
+        ctx5.fillText(str, 600 - w, 300);
+        ctx5.fillText(str, (600 - w) / 2, (300 + 24) / 2);
+
         // 文本移动
-        (()=>{
+        (() => {
             let canvas6 = document.getElementById('c6');
             let ctx6 = canvas6.getContext('2d');
             let totalWidth = parseInt(canvas6.width),
@@ -127,14 +130,14 @@
                 timeGap = 50,
                 x = 0, y = 0;
             let str = 'hello canvas';
-            ctx6.font = height+'px sans-serif';
+            ctx6.font = height + 'px sans-serif';
             ctx6.fillStyle = '#f40';
             ctx6.textBaseline = 'top';
             let width = ctx6.measureText(str).width;
-            setInterval(()=>{
+            setInterval(() => {
                 // x分量
                 let xInc = pxGap * xDirection;
-                if(x+xInc+width>totalWidth || x+xInc < 0){
+                if (x + xInc + width > totalWidth || x + xInc < 0) {
                     xInc = -xInc;
                     xDirection = -xDirection;
                 }
@@ -142,13 +145,13 @@
 
                 // y分量
                 let yInc = pxGap * yDirection;
-                if(y+yInc+height>totalHeight || y+yInc<0){
+                if (y + yInc + height > totalHeight || y + yInc < 0) {
                     yInc = -yInc;
                     yDirection = -yDirection;
                 }
                 y += yInc;
-                
-                ctx6.clearRect(0,0, totalWidth, totalHeight);
+
+                ctx6.clearRect(0, 0, totalWidth, totalHeight);
                 ctx6.fillText(str, x, y);
             }, timeGap);
         })();
@@ -158,11 +161,11 @@
     <canvas id="c7" width="600" height="300">您的游览器版本太低，请升级！</canvas>
 
     <script>
-        (()=>{
+        (() => {
             let ctx7 = document.getElementById('c7').getContext('2d');
 
             // 创建渐变对象(x1,y1, x2, y2)
-            let g = ctx7.createLinearGradient(0,0,100,0);
+            let g = ctx7.createLinearGradient(0, 0, 100, 0);
 
             // 设置颜色点
             g.addColorStop(0, '#008');
@@ -172,72 +175,72 @@
             // 将该渐变对象设置为画笔填充样式
             ctx7.fillStyle = g;
 
-            ctx7.fillRect(0,0, 200, 100);
+            ctx7.fillRect(0, 0, 200, 100);
         })();
     </script>
 
     <h2>柱状图</h2>
     <canvas id="c8" width="960" height="600">您的游览器版本太低，请升级！</canvas>
     <script>
-        
+
         getData(drawBar);
 
         // get ./data.json
         // parse the data and pass it to the callback function
-        function getData(cb){
+        function getData(cb) {
             let xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = ()=>{
-                if(xhr.readyState === 4){
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
                     let data = null;
-                    if(xhr.status >= 200 && xhr.status < 300 || xhr.status === 304){
+                    if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
                         data = JSON.parse(xhr.responseText);
                     }
-                    cb&&cb(data);
+                    cb && cb(data);
                 }
             };
             xhr.open('GET', './data.json', true);
             xhr.send(null);
         }
-        
-        function drawBar(data){
+
+        function drawBar(data) {
             let c8 = document.getElementById('c8'),
                 ctx8 = c8.getContext('2d'),
                 width = c8.width,
                 height = c8.height;
-            if(!data){
+            if (!data) {
                 // not valid data, show sorry message.
                 ctx8.font = "24px sans-serif";
                 ctx8.textBaseline = 'top';
                 let str = '抱歉，加载数据失败。';
                 let strWidth = ctx8.measureText(str);
-                ctx8.fillText(str, (width-strWidth)/2, (height-24)/2);
-                return ;
+                ctx8.fillText(str, (width - strWidth) / 2, (height - 24) / 2);
+                return;
             }
 
             const padding = 50,
                 labelHeight = 24,
                 axisWidth = 2,
-                xAxisLength = width - axisWidth - 2 * padding, 
+                xAxisLength = width - axisWidth - 2 * padding,
                 yAxisLength = height - 2 * padding - axisWidth - labelHeight,
                 barCount = data.length,
                 barGap = 25,
-                barWidth = (xAxisLength - (barCount+1)*barGap) / barCount;
-            
+                barWidth = (xAxisLength - (barCount + 1) * barGap) / barCount;
+
             // 计算数据中最大值
-            let maxValue = data.reduce((prev, cur, index, arr)=>{
-                return prev.value>cur.value?prev:cur;
+            let maxValue = data.reduce((prev, cur, index, arr) => {
+                return prev.value > cur.value ? prev : cur;
             }).value;
-            
+
             // 绘制各个柱形图
-            data.forEach((item, index)=>{
+            data.forEach((item, index) => {
                 // 计算各个柱形图的坐标与尺寸
                 item.width = barWidth;
-                item.height = yAxisLength * 0.9 * item.value/maxValue;
-                item.x = padding + axisWidth + barGap + (barGap+barWidth)*index;
+                item.height = yAxisLength * 0.9 * item.value / maxValue;
+                item.x = padding + axisWidth + barGap + (barGap + barWidth) * index;
                 item.y = padding + yAxisLength - item.height;
-                
+
                 // 绘制柱形图
-                let g = ctx8.createLinearGradient(0, item.y, 0, item.y+item.height);
+                let g = ctx8.createLinearGradient(0, item.y, 0, item.y + item.height);
                 g.addColorStop(0, '#088');
                 g.addColorStop(1, '#083');
                 ctx8.fillStyle = g;
@@ -249,14 +252,14 @@
                 ctx8.font = labelHeight + 'px sans-serif';
                 ctx8.fillStyle = '#f40';
                 ctx8.fillText(item.label, item.x + barWidth / 2 - strWidth / 2, padding + yAxisLength);
-                
+
                 // 绘制值
                 strWidth = ctx8.measureText(item.value.toString()).width;
                 ctx8.textBaseline = 'bottom';
                 ctx8.fillStyle = '#080';
                 ctx8.fillText(item.value, item.x + barWidth / 2 - strWidth / 2, item.y);
             });
-            
+
             // 绘制横纵坐标线
             ctx8.lineWidth = 2;
             ctx8.strokeStyle = '#222';
@@ -273,10 +276,11 @@
     </script>
 
     <style>
-        #container9{
+        #container9 {
             position: relative;
         }
-        #btn9{
+
+        #btn9 {
             position: absolute;
             left: 50%;
             top: 40px;
@@ -296,10 +300,10 @@
         <button id="btn9">加载</button>
     </div>
     <script>
-        (()=>{
+        (() => {
             let ctx9 = document.getElementById('c9').getContext('2d');
             let btn9 = document.getElementById('btn9');
-            btn9.onclick = ()=>{ drawPie();};
+            btn9.onclick = () => { drawPie(); };
             drawDemo();
             drawAxis();
             runBeanEater({
@@ -308,15 +312,15 @@
                 r: 50
             }, 1000);
 
-            function drawDemo(){
+            function drawDemo() {
                 ctx9.beginPath(); // 开始路径
-                ctx9.moveTo(50,10); // 移动到指定点(x,y)
-                ctx9.lineTo(150,10); // 从当前点到指定点绘制一条线段
-                ctx9.lineTo(150,110);
-                ctx9.lineTo(50,110);
+                ctx9.moveTo(50, 10); // 移动到指定点(x,y)
+                ctx9.lineTo(150, 10); // 从当前点到指定点绘制一条线段
+                ctx9.lineTo(150, 110);
+                ctx9.lineTo(50, 110);
                 ctx9.closePath(); // 闭合路径
 
-                ctx9.arc(100,10, 50, 0, Math.PI/2, false); // 绘制圆拱形路径(x,y,r, startArc, endArc)
+                ctx9.arc(100, 10, 50, 0, Math.PI / 2, false); // 绘制圆拱形路径(x,y,r, startArc, endArc)
                 ctx9.stroke();
                 // ctx9.clip(); // 对当前路径进行裁
             }
@@ -324,7 +328,7 @@
             /*
             绘制坐标轴
             */
-            function drawAxis(){
+            function drawAxis() {
                 ctx9.strokeStyle = '#f00';
                 ctx9.beginPath();
                 ctx9.moveTo(30, 370);
@@ -333,7 +337,7 @@
                 ctx9.moveTo(30, 170);
                 ctx9.lineTo(40, 180);
                 ctx9.stroke();
-                
+
                 ctx9.strokeStyle = '#088';
                 ctx9.beginPath();
                 ctx9.moveTo(30, 370);
@@ -344,23 +348,23 @@
 
                 ctx9.stroke();
             }
-            
+
             /*
             绘制圆圈进度条
             */
-            function drawPie(){
+            function drawPie() {
                 let o = {
-                        x: 300,
-                        y: 60
-                    }, // 圆心
+                    x: 300,
+                    y: 60
+                }, // 圆心
                     r = 50; // 半径
-                
+
                 // 绘制背景
-                ctx9.clearRect(o.x-r, o.y-r, 2*r, 2*r);
+                ctx9.clearRect(o.x - r, o.y - r, 2 * r, 2 * r);
                 ctx9.beginPath();
                 ctx9.lineWidth = 15;
                 ctx9.strokeStyle = "#999";
-                ctx9.arc(o.x,o.y, r,0, Math.PI*2);
+                ctx9.arc(o.x, o.y, r, 0, Math.PI * 2);
                 ctx9.stroke();
 
                 // 绘制实际进度
@@ -368,56 +372,56 @@
                     rateStr = '%',
                     timeGap = 150,
                     c = 10;
-                if(drawPie.timer) clearTimeout(drawPie.timer);
-                drawPie.timer = setTimeout(function refresh(){
+                if (drawPie.timer) clearTimeout(drawPie.timer);
+                drawPie.timer = setTimeout(function refresh() {
                     ctx9.lineWidth = 15;
                     ctx9.strokeStyle = "#080";
 
                     // 计算新进度
-                    rate += Math.floor(Math.random()*10);
-                    if(rate > 100) rate = 100;
+                    rate += Math.floor(Math.random() * 10);
+                    if (rate > 100) rate = 100;
 
                     // get color according to rate
-                    let color = rate>=80 ? '#080' :
-                        rate>=40 ? '#f60' : '#f00';
+                    let color = rate >= 80 ? '#080' :
+                        rate >= 40 ? '#f60' : '#f00';
                     ctx9.strokeStyle = color;
                     ctx9.fillStyle = color;
 
                     // 绘制新进度圈
                     ctx9.beginPath();
-                    ctx9.arc(o.x, o.y, r, -90/180*Math.PI, -90/180*Math.PI+rate/100*2*Math.PI);
+                    ctx9.arc(o.x, o.y, r, -90 / 180 * Math.PI, -90 / 180 * Math.PI + rate / 100 * 2 * Math.PI);
                     ctx9.stroke();
 
                     // 绘制新进度文本
-                    let str = rate+rateStr;
+                    let str = rate + rateStr;
                     let height = 24;
-                    ctx9.clearRect(o.x-r*0.6, o.y-r*0.6, r*0.6*2, r*0.6*2); // 清空上次文本
+                    ctx9.clearRect(o.x - r * 0.6, o.y - r * 0.6, r * 0.6 * 2, r * 0.6 * 2); // 清空上次文本
                     ctx9.textBaseline = 'top';
                     ctx9.font = height + 'px sans-serif';
                     let width = ctx9.measureText(str).width;
-                    ctx9.fillText(str, o.x-width/2, o.y-height/2-4);
-                    
+                    ctx9.fillText(str, o.x - width / 2, o.y - height / 2 - 4);
+
                     // 如果未完成，继续设置下次进度刷新
-                    if(rate < 100) drawPie.timer = setTimeout(refresh, timeGap);
+                    if (rate < 100) drawPie.timer = setTimeout(refresh, timeGap);
                 }, 0);
             }
 
-            function runBeanEater(eater, timeGap){
+            function runBeanEater(eater, timeGap) {
                 let isOpen = true;
-                setInterval(function(){
-                    if(isOpen){
+                setInterval(function () {
+                    if (isOpen) {
                         drawBeanEaterClose(eater);
-                    }else{
+                    } else {
                         drawBeanEaterOpen(eater);
                     }
                     isOpen = !isOpen;
                 }, timeGap);
             }
-            
+
             /* 
                 绘制闭嘴的吃豆人
             */
-            function drawBeanEaterClose(eater){
+            function drawBeanEaterClose(eater) {
                 // 清空目标绘图区域
                 let e = eater;
                 ctx9.clearRect(e.x - e.r - 1, e.y - e.r - 1, e.r * 2 + 2, e.r * 2 + 2);
@@ -427,7 +431,7 @@
                 ctx9.beginPath();
                 ctx9.strokeStyle = '#222';
                 ctx9.fillStyle = '#f40';
-                ctx9.arc(e.x, e.y, e.r, 0, Math.PI*2);
+                ctx9.arc(e.x, e.y, e.r, 0, Math.PI * 2);
                 ctx9.lineTo(e.x, e.y);
                 ctx9.fill();
                 ctx9.stroke();
@@ -445,12 +449,12 @@
                 };
                 ctx9.beginPath();
                 ctx9.fillStyle = '#fff';
-                ctx9.arc(e.x + eye.x, e.y+eye.y, eye.r, 0, Math.PI * 2);
+                ctx9.arc(e.x + eye.x, e.y + eye.y, eye.r, 0, Math.PI * 2);
                 ctx9.fill();
 
                 ctx9.beginPath();
                 ctx9.fillStyle = '#000';
-                ctx9.arc(e.x+eye.x+eye.inner.x, e.y+eye.y+eye.inner.y, eye.inner.r, 0, Math.PI * 2);
+                ctx9.arc(e.x + eye.x + eye.inner.x, e.y + eye.y + eye.inner.y, eye.inner.r, 0, Math.PI * 2);
                 ctx9.fill();
 
             }
@@ -458,7 +462,7 @@
             /*
                 绘制张嘴的吃豆人
             */
-            function drawBeanEaterOpen(eater){
+            function drawBeanEaterOpen(eater) {
                 // 清空目标绘图区域
                 let e = eater;
                 ctx9.clearRect(e.x - e.r - 1, e.y - e.r - 1, e.r * 2 + 2, e.r * 2 + 2);
@@ -468,10 +472,10 @@
                 ctx9.beginPath();
                 ctx9.strokeStyle = '#222';
                 ctx9.fillStyle = '#f40';
-                let angle = Math.PI/5;
+                let angle = Math.PI / 5;
                 ctx9.arc(e.x, e.y, e.r, -angle, angle, true);
                 ctx9.lineTo(e.x, e.y);
-                ctx9.lineTo(e.x + e.r*Math.cos(angle), e.y-e.r*Math.sin(angle));
+                ctx9.lineTo(e.x + e.r * Math.cos(angle), e.y - e.r * Math.sin(angle));
                 ctx9.fill();
                 ctx9.stroke();
 
@@ -496,23 +500,23 @@
                 ctx9.arc(e.x + eye.x + eye.inner.x, e.y + eye.y + eye.inner.y, eye.inner.r, 0, Math.PI * 2);
                 ctx9.fill();
             }
-            
+
 
         })();
 
     </script>
-    
+
     <h2>绘制图片</h2>
     <canvas id="ca" width="600" height="400">您的游览器版本太低，请升级！</canvas>
     <script>
-        (()=>{
-            let ca =document.getElementById('ca');
+        (() => {
+            let ca = document.getElementById('ca');
             let ctxa = ca.getContext('2d');
 
             let img = new Image(); // 创建图片对象
             img.src = './img/p3.png'; // 加载图片
             // 图片加载完成处理事件
-            img.onload = function(){
+            img.onload = function () {
                 // console.log(img.width); // 200
                 // ctxa.drawImage(img, 10, 10); // 原大小绘制
                 // ctxa.drawImage(img, 400, 10, 50, 50); // 拉伸绘制
@@ -521,7 +525,7 @@
                 ctxa.drawImage(img, 0, 300, 200, 100);
                 ctxa.drawImage(img, 400, 300, 200, 100);
                 ctxa.drawImage(img, 400, 300, 200, 100);
-                ctxa.drawImage(img, 600/2-200/2, 400/2-100/2, 200, 100);
+                ctxa.drawImage(img, 600 / 2 - 200 / 2, 400 / 2 - 100 / 2, 200, 100);
             };
         })();
     </script>
@@ -529,14 +533,14 @@
     <h2>图片往复运动</h2>
     <canvas id="cb" width="600" height="400">您的游览器版本太低，请升级！</canvas>
     <script>
-        (()=>{
-            let cb =document.getElementById('cb');
+        (() => {
+            let cb = document.getElementById('cb');
             let ctxb = cb.getContext('2d');
 
             let img = new Image(); // 创建图片对象
             img.src = './img/p3.png'; // 加载图片
             // 图片加载完成处理事件
-            img.onload = function(){
+            img.onload = function () {
                 let w = cb.width,
                     h = cb.height,
                     x = 0,
@@ -547,9 +551,9 @@
                     pxStep = 4,
                     width = img.width,
                     height = img.height;
-                setTimeout(function refresh(){
+                setTimeout(function refresh() {
                     let xInc = pxStep * xDirection;
-                    if(x+xInc+width>w || x+xInc<0){
+                    if (x + xInc + width > w || x + xInc < 0) {
                         // turn back
                         xInc = -xInc;
                         xDirection = -xDirection;
@@ -557,25 +561,25 @@
                     x += xInc;
 
                     let yInc = pxStep * yDirection;
-                    if(y+yInc+height>h || y+yInc<0){
+                    if (y + yInc + height > h || y + yInc < 0) {
                         // turn back
                         yInc = -yInc;
                         yDirection = -yDirection;
                     }
                     y += yInc;
-                    
-                    ctxb.clearRect(0,0, w, h);
+
+                    ctxb.clearRect(0, 0, w, h);
                     ctxb.drawImage(img, x, y);
                     setTimeout(refresh, timeStep);
                 }, timeStep);
             };
         })();
     </script>
-    
+
     <h2>多张图片异步加载</h2>
     <canvas id="cc" width="600" height="400">您的游览器版本太低，请升级！</canvas>
     <script>
-        (()=>{
+        (() => {
             let cc = document.getElementById('cc');
             let ctxc = cc.getContext('2d');
 
@@ -583,52 +587,52 @@
                 total = 2;
             let img1 = new Image();
             img1.src = './img/p1.png';
-            img1.onload = function(){
+            img1.onload = function () {
                 progress += 1;
                 console.log('img1 loaded');
-                if(progress == total) startDraw();
+                if (progress == total) startDraw();
             };
             let img2 = new Image();
             img2.src = './img/p2.png';
-            img2.onload = function(){
+            img2.onload = function () {
                 progress += 1;
                 console.log('img2 loaded');
-                if(progress == total) startDraw();
+                if (progress == total) startDraw();
             };
 
-            let startDraw = function(){
+            let startDraw = function () {
                 console.log('drawing...');
                 ctxc.drawImage(img1, 0, 0);
-                ctxc.drawImage(img2, img1.width,0);
+                ctxc.drawImage(img2, img1.width, 0);
             };
         })();
-    </script> 
+    </script>
 
     <h2>变换</h2>
     <canvas id="cd" width="600" height="400">您的游览器版本太低，请升级！</canvas>
     <script>
-        (()=>{
+        (() => {
             let cd = document.getElementById('cd');
             let ctxd = cd.getContext('2d');
 
             let img = new Image();
             img.src = './img/p3.png';
-            img.onload = function(){
+            img.onload = function () {
                 ctxd.translate(300, 200);
                 ctxd.translate(100, 0);
-                ctxd.rotate(Math.PI/6);
-                ctxd.drawImage(img,0,0);
-                ctxd.rotate(Math.PI/6);
-                ctxd.drawImage(img,0,0);
-            };  
-            
+                ctxd.rotate(Math.PI / 6);
+                ctxd.drawImage(img, 0, 0);
+                ctxd.rotate(Math.PI / 6);
+                ctxd.drawImage(img, 0, 0);
+            };
+
         })();
     </script>
 
     <h2>旋转的飞机1</h2>
     <canvas id="ce" width="600" height="400">您的游览器版本太低，请升级！</canvas>
     <script>
-        (()=>{
+        (() => {
             let ce = document.getElementById('ce');
             let ctxe = ce.getContext('2d'),
                 w = ce.width,
@@ -636,14 +640,14 @@
 
             let img = new Image();
             img.src = './img/p3.png';
-            img.onload = function(){
+            img.onload = function () {
                 let width = img.width,
                     height = img.height;
-                ctxe.translate(w/2, h/2);
-                setInterval(function(){
-                    ctxe.clearRect(-w/2,-h/2, w, h);
-                    ctxe.rotate(Math.PI*15/180);
-                    ctxe.drawImage(img, -width/2, -height/2);
+                ctxe.translate(w / 2, h / 2);
+                setInterval(function () {
+                    ctxe.clearRect(-w / 2, -h / 2, w, h);
+                    ctxe.rotate(Math.PI * 15 / 180);
+                    ctxe.drawImage(img, -width / 2, -height / 2);
                 }, 100);
             };
         })();
@@ -652,33 +656,33 @@
     <h2>旋转的飞机2</h2>
     <canvas id="cf" width="600" height="400">您的游览器版本太低，请升级！</canvas>
     <script>
-        (function(){
+        (function () {
 
             let cf = document.getElementById('cf'),
                 ctxf = cf.getContext('2d'),
                 w = cf.width,
                 h = cf.height;
-            
+
             let img = new Image();
             img.src = './img/p3.png';
-            img.onload = function(){
+            img.onload = function () {
                 let width = img.width,
                     height = img.height;
                 let angle = 0,
-                    angleStep = Math.PI*10/180;
-                setInterval(function(){
-                    ctxf.clearRect(0,0,w,h);
-                    ctxf.translate(width/2, width/2);
+                    angleStep = Math.PI * 10 / 180;
+                setInterval(function () {
+                    ctxf.clearRect(0, 0, w, h);
+                    ctxf.translate(width / 2, width / 2);
                     ctxf.rotate(angle);
-                    ctxf.drawImage(img, -width/2, -height/2);
+                    ctxf.drawImage(img, -width / 2, -height / 2);
                     ctxf.rotate(-angle);
-                    ctxf.translate(-width/2, -width/2);
+                    ctxf.translate(-width / 2, -width / 2);
 
-                    ctxf.translate(w-width/2,width/2);
-                    ctxf.rotate(2*angle);
-                    ctxf.drawImage(img, -width/2, -height/2);
-                    ctxf.rotate(-2*angle);
-                    ctxf.translate(width/2-w, -width/2);
+                    ctxf.translate(w - width / 2, width / 2);
+                    ctxf.rotate(2 * angle);
+                    ctxf.drawImage(img, -width / 2, -height / 2);
+                    ctxf.rotate(-2 * angle);
+                    ctxf.translate(width / 2 - w, -width / 2);
 
                     angle += angleStep;
                 }, 100);
@@ -687,7 +691,8 @@
     </script>
 
     <style>
-        #cg, #ag{
+        #cg,
+        #ag {
             display: inline-block;
             vertical-align: middle;
         }
@@ -697,77 +702,77 @@
         <canvas id="cg" width="120" height="48">您的浏览器版本太低，请升级！</canvas><a href="javascript:void(0);" id="ag">看不清？换一张</a>
     </div>
     <script>
-        (function(){
+        (function () {
             let container = document.getElementById('container'),
                 cg = document.getElementById('cg'),
                 ctxg = cg.getContext('2d'),
                 ag = document.getElementById('ag');
             let w = cg.width,
                 h = cg.height;
-            ag.onclick = function(e){
+            ag.onclick = function (e) {
                 e.preventDefault();
                 drawCaptcha();
             };
 
-            let drawCaptcha = function(){
+            let drawCaptcha = function () {
                 // 生成验证码字符
                 let str = 'ABCDEFGHJKLMNPQRSTWXY3456789',
-                    len = 3+Math.floor(Math.random()*3);
+                    len = 3 + Math.floor(Math.random() * 3);
                 let chs = [];
-                while(len>0){
-                    chs.push(str[Math.floor(Math.random()*str.length)]);
+                while (len > 0) {
+                    chs.push(str[Math.floor(Math.random() * str.length)]);
                     len--;
                 }
                 len = chs.length;
 
                 // 绘制背景色
                 ctxg.fillStyle = getRandomColor(false);
-                ctxg.fillRect(0,0,w,h);
-    
+                ctxg.fillRect(0, 0, w, h);
+
                 // 绘制文字
-                let padding = h*0.08,
-                    chWidth = Math.floor((w-2*padding)/len),
-                    chMaxSize = Math.floor(h-2*padding),
-                    chMinSize = Math.floor(0.7*chMaxSize),
-                    chMaxAngle = 30/180*Math.PI,
+                let padding = h * 0.08,
+                    chWidth = Math.floor((w - 2 * padding) / len),
+                    chMaxSize = Math.floor(h - 2 * padding),
+                    chMinSize = Math.floor(0.7 * chMaxSize),
+                    chMaxAngle = 30 / 180 * Math.PI,
                     chMinAngle = -chMaxAngle;
-                chs.forEach((item, index) =>{
+                chs.forEach((item, index) => {
                     let size = getRandomInt(chMinSize, chMaxSize),
                         color = getRandomColor(true),
-                        angle = getRandomInt(chMinAngle, chMaxAngle); 
+                        angle = getRandomInt(chMinAngle, chMaxAngle);
                     ctxg.save();
-                    ctxg.translate(padding+chWidth*(index+0.5), h/2);
+                    ctxg.translate(padding + chWidth * (index + 0.5), h / 2);
                     ctxg.rotate(angle);
                     ctxg.fillStyle = color;
                     ctxg.textBaseline = 'top';
-                    ctxg.font = size+'px SimHei';
-                    ctxg.fillText(item, -chWidth/2, -size/2);
+                    ctxg.font = size + 'px SimHei';
+                    ctxg.fillText(item, -chWidth / 2, -size / 2);
                     ctxg.restore();
                 });
 
                 // 绘制干扰线
-                for(let i = 0; i < 5; i++){
+                for (let i = 0; i < 5; i++) {
                     let x1 = getRandomInt(0, w),
                         x2 = getRandomInt(0, w),
                         y1 = getRandomInt(0, h),
                         y2 = getRandomInt(0, h),
-                        color = getRandomColor(i>2);
+                        color = getRandomColor(i > 2);
                     ctxg.strokeStyle = color;
                     ctxg.beginPath();
-                    ctxg.moveTo(x1,y1);
-                    ctxg.lineTo(x2,y2);
+                    ctxg.moveTo(x1, y1);
+                    ctxg.lineTo(x2, y2);
                     ctxg.stroke();
                 }
 
                 // 绘制杂色点
-                for(let i = 0; i < 100; i++){
+                for (let i = 0; i < 100; i++) {
                     let x = getRandomInt(0, w),
                         y = getRandomInt(0, h),
                         color = getRandomColor(false);
                     ctxg.beginPath();
                     ctxg.fillStyle = color;
                     ctxg.strokeStyle = color;
-                    ctxg.arc(x,y,1,0,Math.PI*2);
+                    ctxg.arc(x, y, 1, 0, Math.PI * 2);
                     ctxg.stroke();
                 }
 
@@ -775,17 +780,17 @@
 
             // 获取随机rgb颜色（字符串表示）
             // isDeep表示是否是深色 
-            let getRandomColor = function(isDeep){
+            let getRandomColor = function (isDeep) {
                 let max = 100,
                     base = isDeep ? 0 : 155;
-                let r = base + Math.floor(Math.random()*max);
-                let g = base + Math.floor(Math.random()*max);
-                let b = base + Math.floor(Math.random()*max);
-                return 'rgb('+r+','+g+','+b+')';
+                let r = base + Math.floor(Math.random() * max);
+                let g = base + Math.floor(Math.random() * max);
+                let b = base + Math.floor(Math.random() * max);
+                return 'rgb(' + r + ',' + g + ',' + b + ')';
             };
 
-            let getRandomInt = function(a,b){
-                return a + Math.floor(Math.random()*(b-a+1));
+            let getRandomInt = function (a, b) {
+                return a + Math.floor(Math.random() * (b - a + 1));
             }
 
             drawCaptcha();
@@ -793,10 +798,11 @@
     </script>
 
     <style>
-        #containerh{
+        #containerh {
             position: relative;
         }
-        #playCtrl{
+
+        #playCtrl {
             position: absolute;
             left: 50%;
             top: 370px;
@@ -817,22 +823,22 @@
         <audio id="music" src="./media/memory.mp3" loop="true">您的浏览器版本太低，不支持audio，请升级。</audio>
     </div>
     <script>
-        (()=>{
+        (() => {
 
             // 控制按钮
             let ctrl = {
                 node: document.getElementById('playCtrl'),
-                addEventListener(){
+                addEventListener() {
                     this.node.onclick = this.switchStatus;
                 },
-                switchStatus(){
+                switchStatus() {
                     // 检查播放状态
-                    if(music.isPaused()){
+                    if (music.isPaused()) {
                         // 暂停中，开启播放，将按钮显示为暂停按钮，开始旋转封面
                         music.play();
                         canvas.drawWhole(false);
                         canvas.rotateFace();
-                    }else{
+                    } else {
                         // 播放中，停止播放，将按钮显示为播放按钮，停止旋转封面
                         music.pause();
                         canvas.drawWhole(true);
@@ -840,7 +846,7 @@
                     }
                 }
             };
-            
+
             // canvas绘图区
             let canvas = {
                 node: document.getElementById('ch'),
@@ -849,15 +855,15 @@
                 h: 500,
                 images: {
                     bg: {
-                        src: './img/bg.jpg', 
+                        src: './img/bg.jpg',
                         img: null // img node will be loaded
                     },
                     disc: {
-                        src: './img/disc.png', 
+                        src: './img/disc.png',
                         img: null
                     },
                     play: {
-                        src: './img/p2.png', 
+                        src: './img/p2.png',
                         img: null
                     },
                     pause: {
@@ -869,61 +875,61 @@
                     intervalId: undefined,
                     angle: 0, // 当前封面旋转角度
                     timeStep: 120, // 角度步进时间间隔
-                    angleStep: Math.PI*1/180 // 旋转角度步进值
+                    angleStep: Math.PI * 1 / 180 // 旋转角度步进值
                 },
                 size: {
                     // circle face
                     o: {
-                        x: 400/2,
-                        y: 500/2-60,
+                        x: 400 / 2,
+                        y: 500 / 2 - 60,
                         R: 140,
                         r: 100
                     },
                     // button
                     b: {
-                        x: 400/2,
-                        y: 500-80/2-50,
+                        x: 400 / 2,
+                        y: 500 - 80 / 2 - 50,
                         w: 80,
                         h: 80
-                    } 
+                    }
                 },
-                init(){
-                    this.loadImages(()=>{
+                init() {
+                    this.loadImages(() => {
                         this.drawWhole(true);
                     });
                 },
                 // 加载绘制所需图片
-                loadImages(cb){
+                loadImages(cb) {
                     let self = this,
                         progress = 0;
-                    let getImage = function(name){
+                    let getImage = function (name) {
                         let img = new Image();
                         img.src = self.images[name].src;
-                        img.onload = function(){
+                        img.onload = function () {
                             self.images[name].img = img;
                             progress++;
-                            if(progress == 4){
-                                cb&&cb();
+                            if (progress == 4) {
+                                cb && cb();
                             }
                         };
                     };
-                    for(let name in self.images){
+                    for (let name in self.images) {
                         getImage(name);
                     }
                 },
-                drawWhole(isPlayIcon){
+                drawWhole(isPlayIcon) {
                     let ctx = this.ctx,
                         size = this.size;
                     ctx.clearRect(0, 0, this.w, this.h);
-                    
+
                     // 绘制背景
                     ctx.drawImage(this.images.bg.img, 0, 0);
-                    
+
                     // 绘制黑胶片边框
                     let disc = this.images.disc.img;
                     ctx.fillStyle = '#222';
                     ctx.beginPath();
-                    ctx.arc(size.o.x,size.o.y, size.o.R, 0, Math.PI*2);
+                    ctx.arc(size.o.x, size.o.y, size.o.R, 0, Math.PI * 2);
                     ctx.fill();
 
                     // 绘制内嵌封面
@@ -934,7 +940,7 @@
                 },
 
                 // 按照angle角度绘制旋转后的封面
-                drawFace(angle){
+                drawFace(angle) {
                     let ctx = this.ctx;
                     let disc = this.images.disc.img,
                         o = this.size.o;
@@ -943,59 +949,59 @@
                     ctx.rotate(this.rotateConf.angle);
 
                     // 清理重绘背景
-                    ctx.clearRect(-o.R/2, -o.R/2, o.R-5, o.R-5);
+                    ctx.clearRect(-o.R / 2, -o.R / 2, o.R - 5, o.R - 5);
                     ctx.fillStyle = '#222';
                     ctx.beginPath();
-                    ctx.arc(0, 0, o.R-1, 0, Math.PI*2);
+                    ctx.arc(0, 0, o.R - 1, 0, Math.PI * 2);
                     ctx.fill();
 
                     // 重绘封面图片
-                    ctx.drawImage(disc, -o.r, -o.r, o.r*2, o.r*2);
+                    ctx.drawImage(disc, -o.r, -o.r, o.r * 2, o.r * 2);
                     ctx.restore();
                 },
 
                 // 开启封面旋转
-                rotateFace(){
+                rotateFace() {
                     let self = this,
                         conf = self.rotateConf;
-                    conf.intervalId = setInterval(function(){
+                    conf.intervalId = setInterval(function () {
                         conf.angle += conf.angleStep;
                         self.drawFace(conf.angle);
                     }, conf.timeStep);
                 },
 
                 // 结束封面旋转
-                stopFace(){
+                stopFace() {
                     clearInterval(this.rotateConf.intervalId);
                 },
                 // 绘制指定状态的按钮图标
                 drawButtonIcon(isPlayIcon) {
                     let img,
                         b = this.size.b;
-                    if(isPlayIcon){
+                    if (isPlayIcon) {
                         img = this.images.play.img;
-                    }else{
+                    } else {
                         img = this.images.pause.img;
                     }
 
-                    this.ctx.drawImage(img, b.x-b.w/2, b.y-b.h/2, b.w, b.h);
+                    this.ctx.drawImage(img, b.x - b.w / 2, b.y - b.h / 2, b.w, b.h);
                 }
             };
 
             let music = {
                 node: document.getElementById('music'),
-                play(){
+                play() {
                     this.node.play();
                 },
-                pause(){
+                pause() {
                     this.node.pause();
                 },
-                isPaused(){
+                isPaused() {
                     return this.node.paused;
                 }
             };
             let app = {
-                start(){
+                start() {
                     canvas.init();
                     ctrl.addEventListener();
                 }
@@ -1006,6 +1012,8 @@
         })();
     </script>
 
+    <script src="../aaaReuse/js/back.js"></script>
 
 </body>
+
 </html>

@@ -1,41 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>列表显示/隐藏切换</title>
-    <style>        
-        h3,ul,li{
+    <style>
+        h3,
+        ul,
+        li {
             margin: 0;
             padding: 0;
         }
-        body{
+
+        body {
             width: 400px;
             margin: 30px auto;
         }
-        h2{
+
+        h2 {
             text-align: center;
         }
-        h3,ul{
+
+        h3,
+        ul {
             border: 1px solid #ccc;
         }
-        h3{
-            padding: 5px;     
-            height: 16px;       
+
+        h3 {
+            padding: 5px;
+            height: 16px;
             line-height: 16px;
             font-size: 16px;
         }
-        ul{
+
+        ul {
             list-style-type: none;
             border-top: none;
             border-bottom: none;
         }
-        li{
+
+        li {
             padding: 5px 5px;
             border-bottom: 1px dashed #ccc;
         }
-        span{
+
+        span {
             float: right;
             margin: 4px 5px 0;
             width: 0px;
@@ -44,15 +55,17 @@
             border-right: 8px solid transparent;
             cursor: pointer;
         }
-        .down{
+
+        .down {
             border-top: 10px solid #555;
         }
-        .up{
+
+        .up {
             border-bottom: 10px solid #555;
         }
-                
     </style>
 </head>
+
 <body>
     <h2>播放列表显示/隐藏切换</h2>
     <h3>播放列表<span id="toggle-show" class="up"></span></h3>
@@ -64,5 +77,8 @@
         <li>发如雪</li>
     </ul>
     <script src="./index.js"></script>
+    <script src="../aaaReuse/js/back.js"></script>
+
 </body>
+
 </html>

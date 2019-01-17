@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>垂直居中</title>
+  <style>
+    body {
+      margin: 20px;
+    }
+
+    p {
+      margin: auto;
+    }
+
+    .wp {
+      margin-top: 20px;
+      border: 4px solid #f08;
+    }
+
+    .box {
+      background: #23272a;
+      color: #fff;
+    }
+
+    .wp.size {
+      height: 160px;
+    }
+
+    .box.size {
+      height: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 style="text-align: center;">各种css垂直居中解决方案</h1>
+
+  <h2>(不定，定) absolute + 负margin </h2>
+  <style>
+    .wp1 {
+      position: relative;
+    }
+
+    .box1 {
+      position: absolute;
+      top: 50%;
+      margin-top: -50px;
+    }
+  </style>
+  <div class="wp wp1">
+    <div class="box size box1"> content content content content content content content content content content content
+      content content content content content content content
+      content content content content content content content content content content content
+      content content content content content content content content content content content content
+      content content content content content content content content content content content conten tcontent content
+      content content content
+      content</div>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+  </div>
+
+  <h2>(不定，定) absolute + auto-margin </h2>
+  <style>
+    .wp2 {
+      position: relative;
+    }
+
+    .box2 {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+  </style>
+  <div class="wp wp2">
+    <div class="box size box2"> content content content content content content content content content content content
+      content content content content content content content
+      content content content content content content content content content content content
+      content content content content content content content content content content content content
+      content content content content content content content content content content content conten tcontent content
+      content content content
+      content</div>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+  </div>
+
+  <h2>(不定，定) absolute + calc </h2>
+  <style>
+    .wp3 {
+      position: relative;
+    }
+
+    .box3 {
+      position: absolute;
+      top: calc(50% - 50px);
+    }
+  </style>
+  <div class="wp wp3">
+    <div class="box size box3"> content content content content content content content content content content content
+      content content content content content content content
+      content content content content content content content content content content content
+      content content content content content content content content content content content content
+      content content content content content content content content content content content conten tcontent content
+      content content content
+      content</div>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+    <p>more more more ...</p>
+  </div>
+
+  <h2>(定，不定) line-height + vertical-align </h2>
+  <!-- 为了兼容IE7，内部需要是行内元素 -->
+  <style>
+    .wp4 {
+      line-height: 160px;
+      font-size: 0;
+    }
+
+    .box4 {
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1.2;
+      font-size: 16px;
+    }
+  </style>
+  <div class="wp size wp4">
+    <span class="box box4"> content content content content content content content content content content content
+      content content content content content content content
+      content content content content content content content content content content content
+      content content content content content content content content content content content content
+      content content content content content content content content content content content conten tcontent content
+      content content content
+      content</span>
+  </div>
+
+  <h2>(不定，不定 ) absolute + transform </h2>
+  <style>
+    .wp5 {
+      position: relative;
+    }
+
+    .box5 {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  </style>
+  <div class="wp wp5">
+    <div class="box box5"> content content content content content content content content content content content
+      content content content content content content content
+      content content content content content content content content content content content
+      content content content content content content content content content content content content
+      content content content content content content content content content content content conten tcontent content
+      content content content
+      content</div>
+    <p>more more ...</p>
+    <p>more more ...</p>
+    <p>more more ...</p>
+    <p>more more ...</p>
+    <p>more more ...</p>
+    <p>more more ...</p>
+    <p>more more ...</p>
+    <p>more more ...</p>
+  </div>
+
+  <h2>(不定，不定) css-table </h2>
+  <style>
+    .wp6 {
+      display: table-cell;
+      vertical-align: middle;
+    }
+  </style>
+  <div class="wp size wp6">
+    <p class="box box6"> content content content content content content content content content content content
+      content content content content content content content
+      content content content content content content content content content content content
+      content content content content content content content content content content content content
+      content content content content content content content content content content content conten tcontent content
+      content content content
+      content</p>
+  </div>
+
+  <h2>(不定，不定) flex </h2>
+  <style>
+    .wp7 {
+      display: flex;
+      align-items: center;
+    }
+  </style>
+  <div class="wp size wp7">
+    <p class="box box7"> content content content content content content content content content content content
+      content content content content content content content
+      content content content content content content content content content content content
+      content content content content content content content content content content content content
+      content content content content content content content content content content content conten tcontent content
+      content content content
+      content</p>
+  </div>
+
+  <script src="../aaaReuse/js/back.js"></script>
+
+</body>
+
+</html>

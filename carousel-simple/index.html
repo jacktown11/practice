@@ -1,29 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Carousel Simple</title>
     <style>
-        *{
+        * {
             margin: 0px;
             padding: 0px;
             text-decoration: none;
         }
-        body{
+
+        body {
             width: 600px;
             margin: auto;
             padding: 20px;
         }
-        h2{
+
+        h2 {
             text-align: center;
         }
-        p{
+
+        p {
             margin: 10px;
             /* text-align: center; */
         }
-        #container{
+
+        #container {
             width: 400px;
             height: 224px;
             margin: auto;
@@ -32,23 +37,32 @@
             position: relative;
 
             /* 禁止用户文本选择 */
-            -webkit-touch-callout: none; /* iOS Safari */
-            -webkit-user-select: none; /* Chrome/Safari/Opera */
-            -khtml-user-select: none; /* Konqueror */
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currentlynot supported by any browser */
+            -webkit-touch-callout: none;
+            /* iOS Safari */
+            -webkit-user-select: none;
+            /* Chrome/Safari/Opera */
+            -khtml-user-select: none;
+            /* Konqueror */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* Internet Explorer/Edge */
+            user-select: none;
+            /* Non-prefixed version, currentlynot supported by any browser */
         }
-        #list{
+
+        #list {
             width: 2800px;
             height: 224px;
             position: absolute;
             z-index: 1;
         }
-        #list img{
+
+        #list img {
             float: left;
         }
-        #buttons{
+
+        #buttons {
             position: absolute;
             height: 10px;
             width: 100px;
@@ -57,7 +71,8 @@
             bottom: 20px;
             text-align: center;
         }
-        #buttons span{
+
+        #buttons span {
             cursor: pointer;
             display: inline-block;
             border: 1px solid #fff;
@@ -65,10 +80,12 @@
             height: 10px;
             border-radius: 50%;
         }
-        #buttons .on{
+
+        #buttons .on {
             background-color: #f40;
         }
-        .arrow{
+
+        .arrow {
             position: absolute;
             z-index: 2;
             width: 40px;
@@ -81,23 +98,28 @@
             font-size: 36px;
             font-weight: bold;
             color: #fff;
-            background-color: rgba(0,0,0,0.3);
+            background-color: rgba(0, 0, 0, 0.3);
             border-radius: 50%;
         }
-        .arrow:hover{
-            background-color: rgba(0,0,0,0.7);
+
+        .arrow:hover {
+            background-color: rgba(0, 0, 0, 0.7);
         }
-        #container:hover .arrow{
+
+        #container:hover .arrow {
             display: block;
         }
-        #prev{
+
+        #prev {
             left: 20px;
         }
-        #next{
+
+        #next {
             right: 20px;
         }
     </style>
 </head>
+
 <body>
     <h2>原生javascript轮播图</h2>
     <p>
@@ -127,9 +149,9 @@
         <a href="javascript:;" class="arrow" id="next">&gt;</a>
     </div>
     <script>
-        window.onload = function(){
+        window.onload = function () {
             let app = {
-                start(){
+                start() {
                     nodes.setEvent();
                     carousel.autoPlay();
                 }
@@ -141,7 +163,7 @@
                 buttons: document.getElementById('buttons').getElementsByTagName('span'),
                 prev: document.getElementById('prev'),
                 next: document.getElementById('next'),
-                setEvent(){
+                setEvent() {
                     this.next.onclick = function (e) {
                         if (!carousel.isAnimating) {
                             // 解锁状态下，切换到后一页
@@ -192,12 +214,12 @@
                     // 切换指定偏移量
                     this.isAnimating = true;
                     let self = this;
-                        list = nodes.list,
+                    list = nodes.list,
                         left = parseInt(list.style.left), // 当前位置
                         newLeft = parseInt(list.style.left) + offset; //目标位置
                     let totalWidth = this.pageWidth * this.pageNum;
-                    let time = this.animateTime, 
-                        interval = this.animateInterval, 
+                    let time = this.animateTime,
+                        interval = this.animateInterval,
                         speed = offset / (time / interval);   // 每次位置变化量
 
                     let go = function () {
@@ -223,7 +245,7 @@
                     };
                     go();
                 },
-                goToPage(targetIndex){
+                goToPage(targetIndex) {
                     // 动画切换到指定页数的页面
                     if (targetIndex !== this.index) {
                         this.showButton(targetIndex);
@@ -231,30 +253,33 @@
                         this.index = targetIndex;
                     }
                 },
-                goNextPage(){
-                    let targetIndex = this.index===this.pageNum?1:this.index+1;
+                goNextPage() {
+                    let targetIndex = this.index === this.pageNum ? 1 : this.index + 1;
                     this.showButton(targetIndex);
                     this.animate(-this.pageWidth);
                     this.index = targetIndex;
                 },
-                goPrevPage(){
-                    let targetIndex = this.index===1?this.pageNum:this.index-1;
+                goPrevPage() {
+                    let targetIndex = this.index === 1 ? this.pageNum : this.index - 1;
                     this.showButton(targetIndex);
                     this.animate(this.pageWidth);
                     this.index = targetIndex;
                 },
-                autoPlay(){
+                autoPlay() {
                     this.intervalId = setInterval(() => {
                         nodes.next.onclick();
                     }, this.loopTime);
                 },
-                stopAutoPlay(){
+                stopAutoPlay() {
                     clearInterval(this.intervalId);
                 }
             };
-            
+
             app.start();
         };
     </script>
+    <script src="../aaaReuse/js/back.js"></script>
+
 </body>
+
 </html>

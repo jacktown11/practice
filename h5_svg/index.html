@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SVG</title>
     <style>
-        body{
+        body {
             text-align: center;
             margin-bottom: 80px;
         }
-        .container{position: relative;}
-        button{
+
+        .container {
+            position: relative;
+        }
+
+        button {
             position: absolute;
             left: 50%;
             bottom: 5px;
@@ -24,19 +29,21 @@
             border: none;
             cursor: pointer;
         }
-        svg{
+
+        svg {
             background-color: #ccc;
         }
     </style>
     <script src="ajax.js"></script>
 </head>
+
 <body>
-     <h1>svg图形</h1>
+    <h1>svg图形</h1>
 
-     <h2>使用svg文件</h2>
-     <img src="./img/a.svg" alt="avg图形">
+    <h2>使用svg文件</h2>
+    <img src="./img/a.svg" alt="avg图形">
 
-     <h2>svg标签基本使用</h2>
+    <h2>svg标签基本使用</h2>
     <svg id="s1" width="600" height="400">
         <rect width="100" height="100"></rect>
         <rect width="100" height="100" x="400" y="0" stroke="#088" stroke-width="3" fill="transparent"></rect>
@@ -45,23 +52,24 @@
 
     <h2>svg绘制矩形</h2>
     <svg id="s2" width="600" height="400">
-        <rect id="s2r1" width="30" height="300" x="285" y="50" fill="#faa" stroke="#800" fill-opacity="0.5" stroke-opacity="0.5"></rect>
+        <rect id="s2r1" width="30" height="300" x="285" y="50" fill="#faa" stroke="#800" fill-opacity="0.5"
+            stroke-opacity="0.5"></rect>
     </svg>
     <script>
         let rect = document.getElementById('s2r1');
-        rect.onmouseenter = function(e){
+        rect.onmouseenter = function (e) {
             this.setAttribute('fill-opacity', '1');
-            this.setAttribute('stroke-opacity','1');
+            this.setAttribute('stroke-opacity', '1');
         };
-        rect.onmouseleave = function(e){
-            this.setAttribute('fill-opacity','0.5');
-            this.setAttribute('stroke-opacity','0.5');
+        rect.onmouseleave = function (e) {
+            this.setAttribute('fill-opacity', '0.5');
+            this.setAttribute('stroke-opacity', '0.5');
         };
     </script>
-    
+
     <br><br>
 
-    <div class="container" >
+    <div class="container">
         <svg id="s3" width="600" height="400">
             <rect id="s3r1" width="30" height="0" x="200" y="350" fill="#088"></rect>
             <rect id="s3r2" width="30" height="0" x="400" y="350" fill="#088"></rect>
@@ -69,11 +77,11 @@
         <button id="btn3">run</button>
     </div>
     <script>
-        (()=>{
+        (() => {
             let btn = document.getElementById('btn3');
             let timer = null;
-            btn.onclick = function(){
-                if(timer) clearTimeout(timer);
+            btn.onclick = function () {
+                if (timer) clearTimeout(timer);
                 let rect1 = document.getElementById('s3r1'),
                     rect2 = document.getElementById('s3r2');
                 let h = 0,
@@ -81,13 +89,13 @@
                     tStep = 100;
                 rect1.setAttribute('height', 0);
                 rect2.setAttribute('height', 0);
-                timer = setTimeout(function refresh(){
-                    if(rect1.getAttribute('height') < 150){
+                timer = setTimeout(function refresh() {
+                    if (rect1.getAttribute('height') < 150) {
                         h += hStep;
                         rect1.setAttribute('height', h);
-                        rect2.setAttribute('height', 2*h);
-                        rect1.setAttribute('y', 400 - 50 -h);
-                        rect2.setAttribute('y', 400 - 50 -2*h);
+                        rect2.setAttribute('height', 2 * h);
+                        rect1.setAttribute('y', 400 - 50 - h);
+                        rect2.setAttribute('y', 400 - 50 - 2 * h);
                         timer = setTimeout(refresh, tStep);
                     }
                 }, tStep);
@@ -97,80 +105,80 @@
 
     </script>
 
-     <svg id="s4" width="600" height="400">
-     </svg>
-     <script>
-         let drawData = function(data){
+    <svg id="s4" width="600" height="400">
+    </svg>
+    <script>
+        let drawData = function (data) {
             let len = data.length;
-            if(len<=0) return;
+            if (len <= 0) return;
             // 计算与配置尺寸
-            let max = data.reduce((prev, cur, index, arr)=>{
-                    return prev.value>cur.value?prev:cur;
-                }).value,
+            let max = data.reduce((prev, cur, index, arr) => {
+                return prev.value > cur.value ? prev : cur;
+            }).value,
                 s4 = document.getElementById('s4'),
                 width = s4.getAttribute('width'),
                 height = s4.getAttribute('height'),
                 padding = 30;
-                gap = (width-2*padding)/len*0.3,
-                w = (width-2*padding)/len*0.7,
+            gap = (width - 2 * padding) / len * 0.3,
+                w = (width - 2 * padding) / len * 0.7,
                 txtH = 50,
-                maxH = height-txtH-2*padding;
+                maxH = height - txtH - 2 * padding;
 
             // 创建一个rect元素
-            let createRect = function(x,y,w,h){
-                let rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
-                rect.setAttribute('width',w);
-                rect.setAttribute('height',h);
-                rect.setAttribute('x',x);
-                rect.setAttribute('y',y);
-                rect.setAttribute('fill','#088');
+            let createRect = function (x, y, w, h) {
+                let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                rect.setAttribute('width', w);
+                rect.setAttribute('height', h);
+                rect.setAttribute('x', x);
+                rect.setAttribute('y', y);
+                rect.setAttribute('fill', '#088');
                 return rect;
             };
-            let createLine = function(x1,y1,x2,y2){
+            let createLine = function (x1, y1, x2, y2) {
                 let line = document.createElement('line');
-                
+
                 return line;
             };
-            
+
             // 遍历数据绘制柱状图
             let frag = document.createDocumentFragment();
-            data.forEach((item,index)=> {
-                let x = padding+gap*(index+1/2)+w*index,
-                    y = padding+maxH*(1-item.value/max),
-                    h = maxH*item.value/max;
-                frag.append(createRect(x,y,w,h));
+            data.forEach((item, index) => {
+                let x = padding + gap * (index + 1 / 2) + w * index,
+                    y = padding + maxH * (1 - item.value / max),
+                    h = maxH * item.value / max;
+                frag.append(createRect(x, y, w, h));
             });
             s4.appendChild(frag);
-         }; 
-         tjk.ajax({
-             url: './data/a.json',
-             type: 'get',
-             dataType: 'json',
-             success(data){
-                 drawData(data);
-             }
-         });
+        };
+        tjk.ajax({
+            url: './data/a.json',
+            type: 'get',
+            dataType: 'json',
+            success(data) {
+                drawData(data);
+            }
+        });
 
-     </script>
-     
-     <h2>svg绘制圆形</h2>
+    </script>
 
-     <svg id="s5" width="600" height="400">
+    <h2>svg绘制圆形</h2>
+
+    <svg id="s5" width="600" height="400">
         <circle cx="50" cy="50" r="50" fill="#808"></circle>
         <circle cx="550" cy="50" r="50" fill="#808"></circle>
         <circle cx="50" cy="350" r="50" fill="#808"></circle>
         <circle cx="550" cy="350" r="50" fill="#808"></circle>
-     </svg>
-     <br>
-     <svg id="s6" width="600" height="400">
-         <circle id="s6c1" cx="50" cy="50" r="50" fill="#880"></circle>
-     </svg><br><br>
-     <script>
-         (()=>{
+    </svg>
+    <br>
+    <svg id="s6" width="600" height="400">
+        <circle id="s6c1" cx="50" cy="50" r="50" fill="#880"></circle>
+    </svg><br><br>
+    <script>
+        (() => {
             let s6 = document.getElementById('s6'),
                 w = parseInt(s6.getAttribute('width')),
                 h = parseInt(s6.getAttribute('height'));
-             let c1 = document.getElementById('s6c1'),
+            let c1 = document.getElementById('s6c1'),
                 x = parseInt(c1.getAttribute('cy')),
                 y = parseInt(c1.getAttribute('cy')),
                 r = parseInt(c1.getAttribute('r')),
@@ -178,169 +186,171 @@
                 yDirection = 1,
                 pxStep = 5,
                 tStep = 50;
-            setInterval(function(){
+            setInterval(function () {
                 let xInc = pxStep * xDirection;
-                if(x+xInc>w-r || x+xInc<r){
+                if (x + xInc > w - r || x + xInc < r) {
                     xInc = -xInc;
                     xDirection = -xDirection;
                 }
                 x += xInc;
-                
+
                 let yInc = pxStep * yDirection;
-                if(y+yInc>h-r || y+yInc<r){
+                if (y + yInc > h - r || y + yInc < r) {
                     yInc = -yInc;
                     yDirection = -yDirection;
                 }
                 y += yInc;
 
                 c1.setAttribute('cx', x);
-                c1.setAttribute('cy',y);
-            },tStep);
-         })();
-     </script>
+                c1.setAttribute('cy', y);
+            }, tStep);
+        })();
+    </script>
 
 
 
-     <style>
-         circle{
-             cursor: pointer;
-         }
-         #s7{
-             display: block;
-             width: 600px;
-             margin: auto;
-         }
-     </style>
-     <p>try to click below!</p>
-     <div class="container" id="container7">
-         <svg id="s7" width="600" height="400">
-    
-         </svg>
-     </div>
-     <script>
-         (()=>{
-             let s7 = document.getElementById('s7'),
+    <style>
+        circle {
+            cursor: pointer;
+        }
+
+        #s7 {
+            display: block;
+            width: 600px;
+            margin: auto;
+        }
+    </style>
+    <p>try to click below!</p>
+    <div class="container" id="container7">
+        <svg id="s7" width="600" height="400">
+
+        </svg>
+    </div>
+    <script>
+        (() => {
+            let s7 = document.getElementById('s7'),
                 c7 = document.getElementById('container7'),
                 w = parseFloat(s7.getAttribute('width')),
                 h = parseFloat(s7.getAttribute('height')),
                 circles = []; //circles created, if been clicked, it will be removed from the array right away
 
-             // get random color
-             let rc = function(){
-                 // use 220 not 256 for make it deeper, so easy to see
-                 let r = Math.floor(Math.random() * 220);
-                 let g = Math.floor(Math.random() * 220);
-                 let b = Math.floor(Math.random() * 220);
-                 return `rgb(${r},${g},${b})`;
-             }
+            // get random color
+            let rc = function () {
+                // use 220 not 256 for make it deeper, so easy to see
+                let r = Math.floor(Math.random() * 220);
+                let g = Math.floor(Math.random() * 220);
+                let b = Math.floor(Math.random() * 220);
+                return `rgb(${r},${g},${b})`;
+            }
 
-             // get random int
-             let ri = function(min,max){
-                 return Math.floor(min + Math.random()*(max-min+1));
-             }
-             
-             // 创建一个圆形（还未添加到dom中），将其存入circles数组，并返回该圆形
-             let createCircle = function(cx,cy){
-                 let r = ri(20,50);
-                 let config = {
+            // get random int
+            let ri = function (min, max) {
+                return Math.floor(min + Math.random() * (max - min + 1));
+            }
+
+            // 创建一个圆形（还未添加到dom中），将其存入circles数组，并返回该圆形
+            let createCircle = function (cx, cy) {
+                let r = ri(20, 50);
+                let config = {
                     r,
-                    cx: cx || ri(r,w-r),
-                    cy: cy || ri(r,h-r),
+                    cx: cx || ri(r, w - r),
+                    cy: cy || ri(r, h - r),
                     fill: rc(),
-                    opacity: Math.random()/2+0.5
-                 };
+                    opacity: Math.random() / 2 + 0.5
+                };
                 let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                for(let key in config){
+                for (let key in config) {
                     circle.setAttribute(key, config[key]);
                 }
                 circles.push(circle);
                 return circle;
-             };
-             
-             // 逐渐放大圆形，增加透明度，最终将其从dom中删除
-             let hideCircle = function(circle){
+            };
+
+            // 逐渐放大圆形，增加透明度，最终将其从dom中删除
+            let hideCircle = function (circle) {
                 let opacityStep = 0.01, // 百分比
                     rStep = 1,
                     tStep = 50;
-                setTimeout(function refresh(){
+                setTimeout(function refresh() {
                     let r = parseFloat(circle.getAttribute('r')),
                         opacity = parseFloat(circle.getAttribute('opacity')),
-                        newR =  r + rStep,
+                        newR = r + rStep,
                         newOpacity = opacity - opacityStep;
-                    if(newOpacity > 0){
+                    if (newOpacity > 0) {
                         circle.setAttribute('opacity', newOpacity);
                         circle.setAttribute('r', newR);
                         setTimeout(refresh, tStep);
-                    }else{
+                    } else {
                         s7.removeChild(circle);
                     }
                 }, tStep);
-             };
+            };
 
-             // 创建10个随机圆形
-             let frag = document.createDocumentFragment();
-             for(let i = 0; i < 10; i++){
-                 frag.appendChild(createCircle());
-             }
-             s7.appendChild(frag);
+            // 创建10个随机圆形
+            let frag = document.createDocumentFragment();
+            for (let i = 0; i < 10; i++) {
+                frag.appendChild(createCircle());
+            }
+            s7.appendChild(frag);
 
-             // 在svg上代理各圆形的点击事件
-             s7.onclick = function(e){
-                 let target = e.target;
-                 if(target.tagName.toLowerCase() === 'circle' && 
-                    circles.indexOf(target)>=0){
+            // 在svg上代理各圆形的点击事件
+            s7.onclick = function (e) {
+                let target = e.target;
+                if (target.tagName.toLowerCase() === 'circle' &&
+                    circles.indexOf(target) >= 0) {
                     // clicking a circle haven't been clicke before
 
                     // remove from circles array and hide from dom
                     circles.splice(circles.indexOf(target), 1);
                     hideCircle(target);
-                 }else{
+                } else {
                     // clicked at some empty space
                     // create a new circle here
                     let x = e.pageX,
                         y = e.pageY;
-                    let cx = x - (c7.offsetLeft+(c7.offsetWidth-w)/2);
+                    let cx = x - (c7.offsetLeft + (c7.offsetWidth - w) / 2);
                     let cy = y - c7.offsetTop;
                     s7.appendChild(createCircle(cx, cy));
-                 }
-             };
+                }
+            };
 
-         })();
-     </script>
+        })();
+    </script>
 
-     <h2>svg绘制椭圆</h2>
-     <svg id="s8" width="600" height="400">
-         <ellipse cx="300" cy="200" rx="150" ry="100" fill="#880"></ellipse>
-         <ellipse cx="300" cy="200" rx="100" ry="150" fill="#808"></ellipse>
-     </svg>
+    <h2>svg绘制椭圆</h2>
+    <svg id="s8" width="600" height="400">
+        <ellipse cx="300" cy="200" rx="150" ry="100" fill="#880"></ellipse>
+        <ellipse cx="300" cy="200" rx="100" ry="150" fill="#808"></ellipse>
+    </svg>
 
-     <h2>svg绘制直线</h2>
-     <svg id="s9" width="600" height="400">
+    <h2>svg绘制直线</h2>
+    <svg id="s9" width="600" height="400">
         <line x1="50" y1="50" x2="350" y2="100" stroke="#088" stroke-width="20" stroke-linecap="round"></line>
         <g stroke="#222" stroke-width="8" stroke-linecap="round">
-            <line x1="60" y1="200" x2="70" y2="200" ></line>
-            <line x1="60" y1="220" x2="70" y2="220" ></line>
-            <line x1="60" y1="240" x2="70" y2="240" ></line>
-            <line x1="85" y1="200" x2="140" y2="200" ></line>
-            <line x1="85" y1="220" x2="140" y2="220" ></line>
-            <line x1="85" y1="240" x2="140" y2="240" ></line>
+            <line x1="60" y1="200" x2="70" y2="200"></line>
+            <line x1="60" y1="220" x2="70" y2="220"></line>
+            <line x1="60" y1="240" x2="70" y2="240"></line>
+            <line x1="85" y1="200" x2="140" y2="200"></line>
+            <line x1="85" y1="220" x2="140" y2="220"></line>
+            <line x1="85" y1="240" x2="140" y2="240"></line>
         </g>
-     </svg>
+    </svg>
 
-     <h2>svg绘制折线</h2>
-     <svg id="sa" width="600" height="400">
+    <h2>svg绘制折线</h2>
+    <svg id="sa" width="600" height="400">
         <polyline points="50,50 100,50 100,100 50,100" fill="transparent" stroke="#444" stroke-width="2"></polyline>
         <polyline points="100,100 115,150 77,120 123,120 85,150 100,100" fill="transparent" stroke="#444" stroke-width="2"></polyline>
-     </svg>
+    </svg>
 
-     <h2>svg绘制多边形</h2>
-     <svg id="sa" width="600" height="400">
+    <h2>svg绘制多边形</h2>
+    <svg id="sa" width="600" height="400">
         <polygon points="100,100 115,150 77,120 123,120 85,150 100,100" fill="#080" stroke="#008" stroke-width="2"></polygon>
-     </svg>
+    </svg>
 
     <h2>svg绘制小图标</h2>
     <svg id="sb" width="600" height="400">
-        <polygon points="100,100 122,115 115,115 115,140 105,140 105,130 95,130 95,140 85,140 85,115 78,115 100,100" fill="#fff"></polygon>
+        <polygon points="100,100 122,115 115,115 115,140 105,140 105,130 95,130 95,140 85,140 85,115 78,115 100,100"
+            fill="#fff"></polygon>
     </svg>
 
     <h2>svg绘制文本</h2>
@@ -362,7 +372,7 @@
                 <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
             </linearGradient>
         </defs>
-        <rect x="0" y="0" width="300" height="200" fill="url(#ge)" ></rect>
+        <rect x="0" y="0" width="300" height="200" fill="url(#ge)"></rect>
         <circle cx="100" cy="100" r="50" fill="url(#ge)"></circle>
         <text font-size="60" x="0" y="300" fill="url(#ge)">快乐每一天</text>
     </svg>
@@ -393,7 +403,7 @@
         <defs>
             <filter id="sf1">
                 <feGaussianBlur stdDeviation="3"></feGaussianBlur>
-            </filter>            
+            </filter>
         </defs>
         <circle cx="150" cy="150" r="50" fill="#f40" filter="url(#sf1)"></circle>
         <circle cx="150" cy="300" r="50" fill="#f40"></circle>
@@ -417,10 +427,10 @@
         </defs>
     </svg>
     <script>
-        (()=>{
+        (() => {
             let svg = document.getElementById('sh'),
                 w = parseFloat(svg.getAttribute('width')),
-                h =parseFloat(svg.getAttribute('height'));
+                h = parseFloat(svg.getAttribute('height'));
             let padding = 25,
                 axisW = 2,
                 txtH = 36,
@@ -429,19 +439,19 @@
                 arrowAngle = 20 / 180 * Math.PI,
                 barGapRate = 30 / 100; // rate 
 
-            let ri = function(min, max){
-                return Math.floor(min+Math.random()*(max-min+1));
+            let ri = function (min, max) {
+                return Math.floor(min + Math.random() * (max - min + 1));
             }
-            let createBar = function(x,y,w,h){
+            let createBar = function (x, y, w, h) {
                 let bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
                 bar.setAttribute('x', x);
                 bar.setAttribute('y', y);
                 bar.setAttribute('width', w);
                 bar.setAttribute('height', h);
-                bar.setAttribute('fill',`url(#gh${ri(1, 3)})`)
+                bar.setAttribute('fill', `url(#gh${ri(1, 3)})`)
                 return bar;
             };
-            let createText = function(str, fontSize, x,y){
+            let createText = function (str, fontSize, x, y) {
                 let text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
                 text.setAttribute('font-size', fontSize);
                 text.setAttribute('x', x);
@@ -450,44 +460,44 @@
                 text.appendChild(document.createTextNode(str));
                 return text;
             };
-            let createLine = function(x1,y1, x2,y2){
+            let createLine = function (x1, y1, x2, y2) {
                 let line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1',x1);
-                line.setAttribute('x2',x2);
-                line.setAttribute('y1',y1);
-                line.setAttribute('y2',y2);
+                line.setAttribute('x1', x1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y1', y1);
+                line.setAttribute('y2', y2);
                 line.setAttribute('stroke', '#222');
                 line.setAttribute('stroke-width', axisW);
                 line.setAttribute('stroke-linecap', 'round');
                 return line;
             };
 
-            let drawBars = function(data){
+            let drawBars = function (data) {
                 let len = data.length,
                     p = padding;
 
-                if(len<=0) return;
-                
+                if (len <= 0) return;
+
                 let frag = document.createDocumentFragment();
 
                 // 绘制条形柱和文字
-                let barGap = (w-2*p)*barGapRate/len,
-                    barW =  (w-2*p)*(1-barGapRate)/len,
-                    max = data.reduce((prev,cur)=>{
-                        return prev.value>cur.value?prev:cur;
+                let barGap = (w - 2 * p) * barGapRate / len,
+                    barW = (w - 2 * p) * (1 - barGapRate) / len,
+                    max = data.reduce((prev, cur) => {
+                        return prev.value > cur.value ? prev : cur;
                     }).value,
-                    maxH = h-2*p-txtH;
-                data.forEach((item, index)=>{
+                    maxH = h - 2 * p - txtH;
+                data.forEach((item, index) => {
                     let p = padding,
-                        barX = p+axisW+barGap*(index+1/2)+barW*index,
+                        barX = p + axisW + barGap * (index + 1 / 2) + barW * index,
                         barH = item.value / max * maxH,
-                        barY = h-p-txtH-barH;
+                        barY = h - p - txtH - barH;
                     frag.appendChild(createBar(barX, barY, barW, barH));
 
                     let txtX = barX,
-                        txtY = h-p-txtH;
+                        txtY = h - p - txtH;
                     frag.appendChild(createText(item.label, txtFont, txtX, txtY));
-                    
+
                 });
 
                 // 绘制坐标轴
@@ -502,7 +512,7 @@
                 frag.appendChild(createLine(w - p, h - p - txtH, w - p - cosL, h - p - txtH + sinL));
                 frag.appendChild(createLine(w - p, h - p - txtH, w - p - cosL, h - p - txtH - sinL));
 
-                
+
                 sh.appendChild(frag);
             }
 
@@ -510,7 +520,7 @@
                 url: './data/a.json',
                 type: 'get',
                 dataType: 'json',
-                success(data){
+                success(data) {
                     drawBars(data);
                 }
             });
@@ -518,7 +528,8 @@
         })();
     </script>
 
-    
-</body>
-</html>
+    <script src="../aaaReuse/js/back.js"></script>
 
+</body>
+
+</html>

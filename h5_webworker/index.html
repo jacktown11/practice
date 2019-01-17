@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
         }
     </style>
 </head>
+
 <body>
     <h1>WebWorker demo</h1>
 
@@ -19,7 +21,7 @@
     <!-- 下面这个js执行很长时间的话，会导致页面阻塞 -->
     <!-- <script src="./js/1.js"></script> -->
     <script>
-        (function(){
+        (function () {
             let w = new Worker('./js/1.js');
         })();
     </script>
@@ -32,19 +34,21 @@
         <p id="info2"></p>
     </div>
     <script>
-    (function(){
-        let w = new Worker('./js/2.js');
-        btn2.onclick =function(){
-            // 将用户输入的数字发送给worker计算
-            w.postMessage(num2.value);
-        };
-        w.onmessage = function(e){
-            // 根据worker传回来的计算结果显示
-            info2.innerHTML = e.data.num + (e.data.isPrime?'是':'不是') + '素数';
-        };
-    })();
+        (function () {
+            let w = new Worker('./js/2.js');
+            btn2.onclick = function () {
+                // 将用户输入的数字发送给worker计算
+                w.postMessage(num2.value);
+            };
+            w.onmessage = function (e) {
+                // 根据worker传回来的计算结果显示
+                info2.innerHTML = e.data.num + (e.data.isPrime ? '是' : '不是') + '素数';
+            };
+        })();
     </script>
-    
-     
+
+    <script src="../aaaReuse/js/back.js"></script>
+
 </body>
+
 </html>
