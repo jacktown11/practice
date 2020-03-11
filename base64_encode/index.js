@@ -35,7 +35,7 @@ function base64(file){
             var reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function(){
-                fileData.innerHTML = reader.result;
+                fileData.value = reader.result;
             };
         }else{
             alert("You must select a valid image file!");
